@@ -1,0 +1,10 @@
+# robots.txt for 45black.tech
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://45black.tech/sitemap.xml
+
+# Crawl-delay (optional, be polite to crawlers)
+Crawl-delay: 1
