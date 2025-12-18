@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="45black training and workshops: Executive Briefings, Team Workshops, and Transformation Programmes for systemic thinking and human-centric AI adoption.">
+  <title>Training & Workshops | 45black</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    .training-card {
+      background: var(--white);
+      padding: var(--space-2xl);
+      border-top: 4px solid var(--saville-blue);
+      margin-bottom: var(--space-xl);
+    }
+    .section--dark .training-card {
+      background: var(--surface-700);
+    }
+    .training-card--blue { border-top-color: var(--saville-blue); }
+    .training-card--purple { border-top-color: var(--saville-purple); }
+    .training-card--teal { border-top-color: var(--saville-teal); }
+    .training-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    .training-card__meta {
+      display: flex;
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+    }
+    .training-card__meta-item {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .training-card__meta-item strong {
+      color: var(--charcoal);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+    .section--dark .training-card__meta-item strong {
+      color: var(--text-primary);
+    }
+    .training-card__desc {
+      font-size: 18px;
+      color: var(--dark-gray);
+      line-height: 1.7;
+      margin-bottom: var(--space-xl);
+      max-width: 700px;
+    }
+    .section--dark .training-card__desc {
+      color: var(--text-secondary);
+    }
+    .training-card__includes {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    @media (min-width: 768px) {
+      .training-card__includes {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .training-card__includes-col h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--saville-teal);
+      margin-bottom: var(--space-md);
+    }
+    .training-card__includes-col ul {
+      list-style: none;
+    }
+    .training-card__includes-col li {
+      padding: var(--space-sm) 0;
+      padding-left: var(--space-lg);
+      position: relative;
+      color: var(--dark-gray);
+      font-size: 15px;
+    }
+    .section--dark .training-card__includes-col li {
+      color: var(--text-secondary);
+    }
+    .training-card__includes-col li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 8px;
+      height: 2px;
+      background: var(--saville-teal);
+    }
+    .training-card__cta {
+      margin-top: var(--space-xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--medium-gray);
+    }
+    .section--dark .training-card__cta {
+      border-top-color: var(--surface-600);
+    }
+    .training-card__price {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+    }
+    .training-card__price strong {
+      font-size: 24px;
+      color: var(--charcoal);
+    }
+    .section--dark .training-card__price strong {
+      color: var(--text-primary);
+    }
+    .approach-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      margin-top: var(--space-2xl);
+    }
+    @media (min-width: 768px) {
+      .approach-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .approach-item {
+      text-align: center;
+      padding: var(--space-xl);
+    }
+    .approach-item__icon {
+      width: 64px;
+      height: 64px;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-lg);
+      font-size: 24px;
+      color: var(--saville-blue);
+    }
+    .section--dark .approach-item__icon {
+      background: var(--surface-600);
+    }
+    .approach-item__title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-sm);
+    }
+    .section--dark .approach-item__title {
+      color: var(--text-primary);
+    }
+    .approach-item__desc {
+      font-size: 15px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+    .section--dark .approach-item__desc {
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Color Bar -->
+  <div class="color-bar">
+    <div class="color-bar__block color-bar__block--blue"></div>
+    <div class="color-bar__block color-bar__block--purple"></div>
+    <div class="color-bar__block color-bar__block--teal"></div>
+    <div class="color-bar__block color-bar__block--green"></div>
+    <div class="color-bar__block color-bar__block--orange"></div>
+    <div class="color-bar__block color-bar__block--coral"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__container">
+      <a href="/" class="header__logo">
+        <span class="header__wordmark">45BLACK</span>
+        <span class="header__tagline">Systemic Thinking for Human-Centric AI</span>
+      </a>
+
+      <nav class="header__nav">
+        <a href="/methodology.html" class="header__nav-link">Methodology</a>
+        <a href="/training.html" class="header__nav-link">Training</a>
+        <a href="/case-study.html" class="header__nav-link">Case Study</a>
+        <a href="/about.html" class="header__nav-link">About</a>
+        <a href="/contact.html" class="header__nav-link header__nav-link--cta">Book Discovery Call</a>
+      </nav>
+
+      <button class="header__menu-btn" aria-label="Open menu" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="/methodology.html" class="mobile-nav__link">Methodology</a>
+    <a href="/training.html" class="mobile-nav__link">Training</a>
+    <a href="/case-study.html" class="mobile-nav__link">Case Study</a>
+    <a href="/about.html" class="mobile-nav__link">About</a>
+    <a href="/contact.html" class="mobile-nav__link">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section class="section section--dark">
+      <div class="section__container">
+        <p class="label animate-in">Training & Workshops</p>
+        <h1 class="animate-in animate-delay-1">Build capability, not dependency</h1>
+        <p class="body-lg animate-in animate-delay-2 max-w-medium">Training programmes designed to transfer real capability to your team. From executive briefings to comprehensive transformation programmes, we work at the pace and depth your organisation needs.</p>
+      </div>
+    </section>
+
+    <!-- Our Approach -->
+    <section class="section section--light">
+      <div class="section__container">
+        <p class="label text-center">Our Approach</p>
+        <h2 class="text-center">How we work</h2>
+
+        <div class="approach-grid">
+          <div class="approach-item">
+            <div class="approach-item__icon">1</div>
+            <h3 class="approach-item__title">Understand Your Context</h3>
+            <p class="approach-item__desc">We start by understanding your organisation's current state, challenges, and objectives. No off-the-shelf solutions—everything is tailored.</p>
+          </div>
+          <div class="approach-item">
+            <div class="approach-item__icon">2</div>
+            <h3 class="approach-item__title">Transfer Real Skills</h3>
+            <p class="approach-item__desc">Our goal is capability, not dependency. We teach frameworks and methods your team can apply independently long after we're gone.</p>
+          </div>
+          <div class="approach-item">
+            <div class="approach-item__icon">3</div>
+            <h3 class="approach-item__title">Support Implementation</h3>
+            <p class="approach-item__desc">Learning without application is wasted. We provide follow-up support to ensure concepts translate into real organisational change.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training Options -->
+    <section class="section section--gray">
+      <div class="section__container">
+        <p class="label">Training Options</p>
+        <h2 class="mb-2xl">Programmes for every stage</h2>
+
+        <!-- Executive Briefing -->
+        <div class="training-card training-card--blue" id="executive-briefing">
+          <div class="training-card__header">
+            <div>
+              <h3 class="h3 mb-sm">Executive Briefing</h3>
+              <p class="body-sm">Strategic introduction to systemic AI adoption</p>
+            </div>
+            <div class="training-card__meta">
+              <div class="training-card__meta-item">
+                <strong>Duration</strong>
+                Half-day (4 hours)
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Audience</strong>
+                C-Suite, Senior Leadership
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Group Size</strong>
+                Up to 12 participants
+              </div>
+            </div>
+          </div>
+
+          <p class="training-card__desc">A focused session for senior leaders who need to understand AI transformation without the hype. We cut through vendor promises to examine what actually works, what fails, and why systemic thinking is the prerequisite for successful AI adoption.</p>
+
+          <div class="training-card__includes">
+            <div class="training-card__includes-col">
+              <h4>What's covered</h4>
+              <ul>
+                <li>Why most AI initiatives fail (and what they have in common)</li>
+                <li>The four-stage transformation model</li>
+                <li>Identifying AI opportunities in your organisation</li>
+                <li>Building the business case for systemic change</li>
+                <li>Risk assessment and governance fundamentals</li>
+              </ul>
+            </div>
+            <div class="training-card__includes-col">
+              <h4>You'll leave with</h4>
+              <ul>
+                <li>Clear framework for evaluating AI opportunities</li>
+                <li>Understanding of your organisation's readiness</li>
+                <li>Prioritised list of potential quick wins</li>
+                <li>Questions to ask vendors and consultants</li>
+                <li>Next steps tailored to your situation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="training-card__cta">
+            <p class="training-card__price"><strong>From £2,500</strong> + VAT</p>
+            <a href="/contact.html" class="btn btn--primary">Book Executive Briefing</a>
+          </div>
+        </div>
+
+        <!-- Team Workshop -->
+        <div class="training-card training-card--purple" id="team-workshop">
+          <div class="training-card__header">
+            <div>
+              <h3 class="h3 mb-sm">Team Workshop</h3>
+              <p class="body-sm">Hands-on capability building for working teams</p>
+            </div>
+            <div class="training-card__meta">
+              <div class="training-card__meta-item">
+                <strong>Duration</strong>
+                1-2 days
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Audience</strong>
+                Operations, Innovation, Process Teams
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Group Size</strong>
+                8-20 participants
+              </div>
+            </div>
+          </div>
+
+          <p class="training-card__desc">Practical, hands-on training for teams who will actually implement AI-enabled processes. Participants work with real examples from your organisation, building skills they can immediately apply to their work.</p>
+
+          <div class="training-card__includes">
+            <div class="training-card__includes-col">
+              <h4>Workshop options</h4>
+              <ul>
+                <li><strong>Systemic Thinking Foundations:</strong> Pattern recognition, feedback loops, leverage points</li>
+                <li><strong>Knowledge Organisation:</strong> Taxonomy design, knowledge capture, validation</li>
+                <li><strong>Process Mapping:</strong> Machine-readable documentation, automation readiness</li>
+                <li><strong>AI Integration:</strong> Human-in-the-loop design, governance frameworks</li>
+              </ul>
+            </div>
+            <div class="training-card__includes-col">
+              <h4>Every workshop includes</h4>
+              <ul>
+                <li>Pre-workshop discovery session</li>
+                <li>Customised materials using your examples</li>
+                <li>Practical exercises and group work</li>
+                <li>Templates and frameworks to keep</li>
+                <li>30-day follow-up support</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="training-card__cta">
+            <p class="training-card__price"><strong>From £4,500</strong> + VAT per day</p>
+            <a href="/contact.html" class="btn btn--primary">Enquire About Workshops</a>
+          </div>
+        </div>
+
+        <!-- Transformation Programme -->
+        <div class="training-card training-card--teal" id="transformation-programme">
+          <div class="training-card__header">
+            <div>
+              <h3 class="h3 mb-sm">Transformation Programme</h3>
+              <p class="body-sm">Comprehensive capability building across all four stages</p>
+            </div>
+            <div class="training-card__meta">
+              <div class="training-card__meta-item">
+                <strong>Duration</strong>
+                3-6 months
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Audience</strong>
+                Cross-functional teams
+              </div>
+              <div class="training-card__meta-item">
+                <strong>Format</strong>
+                Blended learning + coaching
+              </div>
+            </div>
+          </div>
+
+          <p class="training-card__desc">A comprehensive programme that takes your organisation through all four stages of the 45black methodology. Combines training, consulting, and coaching to build lasting capability and deliver measurable outcomes.</p>
+
+          <div class="training-card__includes">
+            <div class="training-card__includes-col">
+              <h4>Programme structure</h4>
+              <ul>
+                <li><strong>Phase 1:</strong> Systemic mindset development across leadership and teams</li>
+                <li><strong>Phase 2:</strong> Knowledge organisation pilot—capture and structure key domain</li>
+                <li><strong>Phase 3:</strong> Process mapping for selected workflows</li>
+                <li><strong>Phase 4:</strong> Targeted AI implementation with full governance</li>
+              </ul>
+            </div>
+            <div class="training-card__includes-col">
+              <h4>Ongoing support</h4>
+              <ul>
+                <li>Weekly progress reviews</li>
+                <li>On-call advisory support</li>
+                <li>Stakeholder communication guidance</li>
+                <li>Change management coaching</li>
+                <li>Documentation and playbooks</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="training-card__cta">
+            <p class="training-card__price"><strong>Pricing on enquiry</strong> — Tailored to scope and organisation size</p>
+            <a href="/contact.html" class="btn btn--primary">Discuss Transformation Programme</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- What Makes Us Different -->
+    <section class="section section--light">
+      <div class="section__container">
+        <div class="philosophy">
+          <div>
+            <p class="label">Why 45black</p>
+            <p class="philosophy__statement">We don't just teach theory. We've <em>built systems</em> using this methodology—including a full governance platform for UK pension compliance. We know what works because we've made it work.</p>
+          </div>
+
+          <div class="values-list">
+            <div class="value-item">
+              <div class="value-item__marker"></div>
+              <div class="value-item__content">
+                <h4>Practitioner-Led</h4>
+                <p>Training delivered by someone who's implemented this methodology in complex, regulated environments.</p>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-item__marker"></div>
+              <div class="value-item__content">
+                <h4>Capability Transfer</h4>
+                <p>Our success metric is your independence. We teach skills that remain long after the engagement ends.</p>
+              </div>
+            </div>
+            <div class="value-item">
+              <div class="value-item__marker"></div>
+              <div class="value-item__content">
+                <h4>Human-Centric</h4>
+                <p>Accessibility isn't an afterthought. All materials meet WCAG standards and accommodate diverse learning styles.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section section--gray">
+      <div class="section__container">
+        <h2>Let's find the right fit</h2>
+        <p class="body-lg">Every organisation's needs are different. Book a discovery call to discuss your situation and explore which programme makes sense for you.</p>
+        <a href="/contact.html" class="btn btn--primary">Book Discovery Call</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <div class="footer__wordmark">45BLACK</div>
+        <p class="footer__tagline">"Think systemically. Map precisely. Automate humanely."</p>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Services</p>
+        <ul class="footer__nav-list">
+          <li><a href="/methodology.html">Methodology</a></li>
+          <li><a href="/training.html">Training & Workshops</a></li>
+          <li><a href="/case-study.html">Case Study</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Company</p>
+        <ul class="footer__nav-list">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Legal</p>
+        <ul class="footer__nav-list">
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+          <li><a href="/terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__legal">&copy; 2025 45BLACK LIMITED (Company No. 16860363)</p>
+      <p class="footer__legal">Registered in England and Wales</p>
+      <p class="footer__legal">Registered Office: 20 Wenlock Road, London, England, N1 7GU</p>
+      <p class="footer__location">Operating from Leeds, West Yorkshire | Serving UK Organisations</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>

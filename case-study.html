@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case Study: Apex Governance Platform - How the 45black methodology was applied to build a UK pension trustee compliance monitoring system.">
+  <title>Case Study: Apex Governance | 45black</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    .case-study-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xl);
+      padding: var(--space-xl);
+      background: var(--light-gray);
+      margin-bottom: var(--space-3xl);
+    }
+    .section--dark .case-study-meta {
+      background: var(--surface-700);
+    }
+    .case-study-meta__item {
+      flex: 1;
+      min-width: 150px;
+    }
+    .case-study-meta__label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--saville-blue);
+      margin-bottom: var(--space-xs);
+    }
+    .case-study-meta__value {
+      font-size: 16px;
+      color: var(--charcoal);
+    }
+    .section--dark .case-study-meta__value {
+      color: var(--text-primary);
+    }
+    .case-study-section {
+      margin-bottom: var(--space-3xl);
+    }
+    .case-study-section:last-child {
+      margin-bottom: 0;
+    }
+    .case-study-section h3 {
+      margin-bottom: var(--space-lg);
+    }
+    .case-study-section p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--dark-gray);
+      margin-bottom: var(--space-lg);
+    }
+    .section--dark .case-study-section p {
+      color: var(--text-secondary);
+    }
+    .case-study-section p:last-child {
+      margin-bottom: 0;
+    }
+    .methodology-application {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 768px) {
+      .methodology-application {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .methodology-step {
+      padding: var(--space-xl);
+      border-left: 4px solid var(--saville-blue);
+      background: var(--white);
+    }
+    .section--dark .methodology-step {
+      background: var(--surface-700);
+    }
+    .methodology-step--1 { border-left-color: var(--saville-blue); }
+    .methodology-step--2 { border-left-color: var(--saville-purple); }
+    .methodology-step--3 { border-left-color: var(--saville-teal); }
+    .methodology-step--4 { border-left-color: var(--saville-green); }
+    .methodology-step__number {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: var(--space-sm);
+    }
+    .methodology-step--1 .methodology-step__number { color: var(--saville-blue); }
+    .methodology-step--2 .methodology-step__number { color: var(--saville-purple); }
+    .methodology-step--3 .methodology-step__number { color: var(--saville-teal); }
+    .methodology-step--4 .methodology-step__number { color: var(--saville-green); }
+    .methodology-step__title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-md);
+    }
+    .section--dark .methodology-step__title {
+      color: var(--text-primary);
+    }
+    .methodology-step__desc {
+      font-size: 15px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+    .section--dark .methodology-step__desc {
+      color: var(--text-secondary);
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 768px) {
+      .results-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .result-item {
+      text-align: center;
+      padding: var(--space-xl);
+      background: var(--white);
+    }
+    .section--dark .result-item {
+      background: var(--surface-700);
+    }
+    .result-item__number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--saville-blue);
+      margin-bottom: var(--space-sm);
+    }
+    .result-item__label {
+      font-size: 14px;
+      color: var(--dark-gray);
+    }
+    .section--dark .result-item__label {
+      color: var(--text-secondary);
+    }
+    .note-box {
+      background: var(--light-gray);
+      border-left: 4px solid var(--saville-teal);
+      padding: var(--space-xl);
+      margin-top: var(--space-2xl);
+    }
+    .section--dark .note-box {
+      background: var(--surface-700);
+    }
+    .note-box__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--saville-teal);
+      margin-bottom: var(--space-sm);
+    }
+    .note-box p {
+      font-size: 16px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+    .section--dark .note-box p {
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Color Bar -->
+  <div class="color-bar">
+    <div class="color-bar__block color-bar__block--blue"></div>
+    <div class="color-bar__block color-bar__block--purple"></div>
+    <div class="color-bar__block color-bar__block--teal"></div>
+    <div class="color-bar__block color-bar__block--green"></div>
+    <div class="color-bar__block color-bar__block--orange"></div>
+    <div class="color-bar__block color-bar__block--coral"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__container">
+      <a href="/" class="header__logo">
+        <span class="header__wordmark">45BLACK</span>
+        <span class="header__tagline">Systemic Thinking for Human-Centric AI</span>
+      </a>
+
+      <nav class="header__nav">
+        <a href="/methodology.html" class="header__nav-link">Methodology</a>
+        <a href="/training.html" class="header__nav-link">Training</a>
+        <a href="/case-study.html" class="header__nav-link">Case Study</a>
+        <a href="/about.html" class="header__nav-link">About</a>
+        <a href="/contact.html" class="header__nav-link header__nav-link--cta">Book Discovery Call</a>
+      </nav>
+
+      <button class="header__menu-btn" aria-label="Open menu" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="/methodology.html" class="mobile-nav__link">Methodology</a>
+    <a href="/training.html" class="mobile-nav__link">Training</a>
+    <a href="/case-study.html" class="mobile-nav__link">Case Study</a>
+    <a href="/about.html" class="mobile-nav__link">About</a>
+    <a href="/contact.html" class="mobile-nav__link">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section class="section section--dark">
+      <div class="section__container">
+        <p class="label animate-in">Case Study</p>
+        <h1 class="animate-in animate-delay-1">Apex Governance Platform</h1>
+        <p class="body-lg animate-in animate-delay-2 max-w-medium">A portfolio demonstration piece showing the 45black methodology in action—built for UK pension compliance using the same systems thinking + AI approach taught to clients.</p>
+      </div>
+    </section>
+
+    <!-- Case Study Meta -->
+    <section class="section section--light">
+      <div class="section__container">
+
+        <div class="case-study-meta">
+          <div class="case-study-meta__item">
+            <p class="case-study-meta__label">Domain</p>
+            <p class="case-study-meta__value">UK Pension Trustee Governance</p>
+          </div>
+          <div class="case-study-meta__item">
+            <p class="case-study-meta__label">Challenge</p>
+            <p class="case-study-meta__value">TPR Compliance Monitoring</p>
+          </div>
+          <div class="case-study-meta__item">
+            <p class="case-study-meta__label">Approach</p>
+            <p class="case-study-meta__value">Full 45black Methodology</p>
+          </div>
+          <div class="case-study-meta__item">
+            <p class="case-study-meta__label">Status</p>
+            <p class="case-study-meta__value">Production Ready</p>
+          </div>
+        </div>
+
+        <!-- The Challenge -->
+        <div class="case-study-section">
+          <h3>The Challenge</h3>
+          <p>UK pension trustees face increasingly complex regulatory requirements from The Pensions Regulator (TPR). Monitoring compliance across multiple schemes, tracking evidence, managing deadlines, and maintaining governance documentation is a significant operational burden.</p>
+          <p>Traditional approaches rely on spreadsheets, manual tracking, and periodic audits—creating gaps where compliance issues can go unnoticed until they become problems.</p>
+        </div>
+
+        <!-- The Approach -->
+        <div class="case-study-section">
+          <h3>How the 45black Methodology Was Applied</h3>
+          <p>Rather than starting with technology, the project began with systemic analysis of how pension governance actually works—the interconnections between regulatory requirements, trustee responsibilities, scheme administration, and evidence management.</p>
+
+          <div class="methodology-application">
+            <div class="methodology-step methodology-step--1">
+              <p class="methodology-step__number">STAGE 01</p>
+              <h4 class="methodology-step__title">Systemic Analysis</h4>
+              <p class="methodology-step__desc">Mapped the complete pension governance ecosystem: regulatory bodies, trustee boards, scheme administrators, investment managers, and their interconnections. Identified feedback loops and failure points.</p>
+            </div>
+            <div class="methodology-step methodology-step--2">
+              <p class="methodology-step__number">STAGE 02</p>
+              <h4 class="methodology-step__title">Knowledge Structure</h4>
+              <p class="methodology-step__desc">Structured TPR's regulatory requirements into a machine-readable taxonomy. Captured expert knowledge about what "good" looks like for each control, including proportionality considerations for different scheme sizes.</p>
+            </div>
+            <div class="methodology-step methodology-step--3">
+              <p class="methodology-step__number">STAGE 03</p>
+              <h4 class="methodology-step__title">Process Mapping</h4>
+              <p class="methodology-step__desc">Documented compliance workflows in structured formats: evidence collection, review cycles, escalation paths, and audit trails. Every process includes clear human decision points.</p>
+            </div>
+            <div class="methodology-step methodology-step--4">
+              <p class="methodology-step__number">STAGE 04</p>
+              <h4 class="methodology-step__title">Targeted AI</h4>
+              <p class="methodology-step__desc">Applied AI where it genuinely helps: automated compliance scoring, pattern detection in governance data, and intelligent alerts. Humans remain accountable for all compliance decisions.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- What Was Built -->
+        <div class="case-study-section">
+          <h3>What Was Built</h3>
+          <p>Apex Governance is a comprehensive platform for pension trustee compliance monitoring. It tracks scheme-level controls against TPR requirements, manages evidence collection and review workflows, and provides clear visibility into compliance status.</p>
+          <p>Key features include proportionality frameworks that adapt requirements to scheme size, automated escalation for overdue items, evidence verification workflows with full audit trails, and dashboards that surface issues before they become problems.</p>
+          <p>The system was designed with accessibility at its core—meeting WCAG 2.1 AA standards throughout—because compliance tools need to work for everyone involved in governance.</p>
+        </div>
+
+        <!-- Results -->
+        <div class="case-study-section">
+          <h3>Demonstration Outcomes</h3>
+
+          <div class="results-grid">
+            <div class="result-item">
+              <p class="result-item__number">18</p>
+              <p class="result-item__label">Critical TPR Controls Tracked</p>
+            </div>
+            <div class="result-item">
+              <p class="result-item__number">3</p>
+              <p class="result-item__label">Scheme Size Tiers</p>
+            </div>
+            <div class="result-item">
+              <p class="result-item__number">100%</p>
+              <p class="result-item__label">Human Accountability</p>
+            </div>
+            <div class="result-item">
+              <p class="result-item__number">AA</p>
+              <p class="result-item__label">WCAG Compliance</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why This Matters -->
+        <div class="case-study-section">
+          <h3>Why This Matters</h3>
+          <p>Apex demonstrates that the 45black methodology works in one of the UK's most complex, regulated industries. Pension governance involves legal requirements, fiduciary duties, regulatory scrutiny, and real consequences for failures.</p>
+          <p>If systemic thinking + targeted AI can work here—where documentation requirements are stringent, audit trails are mandatory, and human accountability is non-negotiable—it can work in your organisation too.</p>
+
+          <div class="note-box">
+            <p class="note-box__title">Note on Availability</p>
+            <p>Apex Governance was built as a portfolio demonstration piece. If you're interested in pension governance tooling or similar applications, get in touch to discuss your specific needs.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section section--gray">
+      <div class="section__container">
+        <h2>Want to see this methodology applied to your challenges?</h2>
+        <p class="body-lg">Let's discuss how systemic thinking and targeted AI can address your organisation's specific needs.</p>
+        <div class="hero__cta" style="justify-content: center;">
+          <a href="/methodology.html" class="btn btn--secondary">Explore the Methodology</a>
+          <a href="/contact.html" class="btn btn--primary">Book Discovery Call</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <div class="footer__wordmark">45BLACK</div>
+        <p class="footer__tagline">"Think systemically. Map precisely. Automate humanely."</p>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Services</p>
+        <ul class="footer__nav-list">
+          <li><a href="/methodology.html">Methodology</a></li>
+          <li><a href="/training.html">Training & Workshops</a></li>
+          <li><a href="/case-study.html">Case Study</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Company</p>
+        <ul class="footer__nav-list">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Legal</p>
+        <ul class="footer__nav-list">
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+          <li><a href="/terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__legal">&copy; 2025 45BLACK LIMITED (Company No. 16860363)</p>
+      <p class="footer__legal">Registered in England and Wales</p>
+      <p class="footer__legal">Registered Office: 20 Wenlock Road, London, England, N1 7GU</p>
+      <p class="footer__location">Operating from Leeds, West Yorkshire | Serving UK Organisations</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>

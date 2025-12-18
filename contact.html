@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact 45black. Based in Leeds, West Yorkshire, serving organisations across the UK. Book a discovery call for systemic thinking and AI transformation.">
+  <title>Contact | 45black</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <style>
+    /* Contact Form Styles */
+    .contact-form {
+      background: var(--light-gray);
+      padding: var(--space-2xl);
+    }
+    .section--dark .contact-form {
+      background: var(--surface-700);
+    }
+    .contact-form__title {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-lg);
+    }
+    .section--dark .contact-form__title {
+      color: var(--text-primary);
+    }
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark-gray);
+      margin-bottom: var(--space-sm);
+    }
+    .section--dark .form-group label {
+      color: var(--text-secondary);
+    }
+    .form-group label .required {
+      color: var(--saville-coral);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: var(--font-primary);
+      font-size: 16px;
+      color: var(--charcoal);
+      background: var(--white);
+      border: 1px solid var(--medium-gray);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .section--dark .form-group input,
+    .section--dark .form-group textarea,
+    .section--dark .form-group select {
+      background: var(--surface-800);
+      color: var(--text-primary);
+      border-color: var(--surface-500);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--saville-blue);
+      box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.15);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+    }
+    .form-group textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+    }
+    .form-group select option {
+      background: var(--white);
+      color: var(--charcoal);
+    }
+    .section--dark .form-group select option {
+      background: var(--surface-800);
+      color: var(--text-primary);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    @media (min-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .form-submit {
+      margin-top: var(--space-xl);
+    }
+    .form-submit .btn {
+      width: 100%;
+    }
+    @media (min-width: 768px) {
+      .form-submit .btn {
+        width: auto;
+      }
+    }
+    .form-note {
+      margin-top: var(--space-lg);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    /* Success/Error states */
+    .form-message {
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      font-size: 14px;
+    }
+    .form-message--success {
+      background: rgba(74, 124, 89, 0.15);
+      border-left: 4px solid var(--saville-green);
+      color: var(--saville-green);
+    }
+    .form-message--error {
+      background: rgba(230, 81, 0, 0.15);
+      border-left: 4px solid var(--saville-coral);
+      color: var(--saville-coral);
+    }
+    .form-message.hidden {
+      display: none;
+    }
+    /* Honeypot field - hidden from humans */
+    .form-honey {
+      position: absolute;
+      left: -9999px;
+    }
+    /* Process steps */
+    .process-steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 768px) {
+      .process-steps {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .process-step {
+      background: var(--white);
+      padding: var(--space-xl);
+      border-top: 4px solid var(--saville-blue);
+    }
+    .section--dark .process-step {
+      background: var(--surface-700);
+    }
+    .process-step:nth-child(2) { border-top-color: var(--saville-teal); }
+    .process-step:nth-child(3) { border-top-color: var(--saville-green); }
+    .process-step__number {
+      width: 40px;
+      height: 40px;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--saville-blue);
+      margin-bottom: var(--space-lg);
+    }
+    .section--dark .process-step__number {
+      background: var(--surface-600);
+    }
+    .process-step:nth-child(2) .process-step__number { color: var(--saville-teal); }
+    .process-step:nth-child(3) .process-step__number { color: var(--saville-green); }
+    .process-step__title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-sm);
+    }
+    .section--dark .process-step__title {
+      color: var(--text-primary);
+    }
+    .process-step__desc {
+      font-size: 15px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+    }
+    .section--dark .process-step__desc {
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Color Bar -->
+  <div class="color-bar">
+    <div class="color-bar__block color-bar__block--blue"></div>
+    <div class="color-bar__block color-bar__block--purple"></div>
+    <div class="color-bar__block color-bar__block--teal"></div>
+    <div class="color-bar__block color-bar__block--green"></div>
+    <div class="color-bar__block color-bar__block--orange"></div>
+    <div class="color-bar__block color-bar__block--coral"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header__container">
+      <a href="/" class="header__logo">
+        <span class="header__wordmark">45BLACK</span>
+        <span class="header__tagline">Systemic Thinking for Human-Centric AI</span>
+      </a>
+
+      <nav class="header__nav">
+        <a href="/methodology.html" class="header__nav-link">Methodology</a>
+        <a href="/training.html" class="header__nav-link">Training</a>
+        <a href="/case-study.html" class="header__nav-link">Case Study</a>
+        <a href="/about.html" class="header__nav-link">About</a>
+        <a href="/contact.html" class="header__nav-link header__nav-link--cta">Book Discovery Call</a>
+      </nav>
+
+      <button class="header__menu-btn" aria-label="Open menu" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="/methodology.html" class="mobile-nav__link">Methodology</a>
+    <a href="/training.html" class="mobile-nav__link">Training</a>
+    <a href="/case-study.html" class="mobile-nav__link">Case Study</a>
+    <a href="/about.html" class="mobile-nav__link">About</a>
+    <a href="/contact.html" class="mobile-nav__link">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section class="section section--dark">
+      <div class="section__container">
+        <p class="label animate-in">Contact</p>
+        <h1 class="animate-in animate-delay-1">Let's explore fit</h1>
+        <p class="body-lg animate-in animate-delay-2 max-w-medium">Whether you're exploring AI transformation, developing systemic thinking capabilities, or have a specific challenge in mind—reach out. A discovery call is simply a conversation to understand your situation and explore whether 45black can help.</p>
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="section section--light">
+      <div class="section__container">
+        <div class="contact-grid">
+
+          <!-- Contact Form -->
+          <div class="contact-form">
+            <h2 class="contact-form__title">Send a message</h2>
+
+            <div id="formSuccess" class="form-message form-message--success hidden">
+              <strong>Message sent.</strong> Thank you for reaching out. I'll respond within 1-2 business days.
+            </div>
+
+            <div id="formError" class="form-message form-message--error hidden">
+              <strong>Something went wrong.</strong> Please try again or email me directly at wills.crump@45black.tech
+            </div>
+
+            <form id="contactForm" action="https://formsubmit.co/wills.crump@45black.tech" method="POST">
+              <!-- FormSubmit configuration -->
+              <input type="hidden" name="_subject" value="New enquiry from 45black.tech">
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_next" value="https://45black.tech/contact.html?success=true">
+
+              <!-- Honeypot for spam protection -->
+              <input type="text" name="_honey" class="form-honey" tabindex="-1" autocomplete="off">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Name <span class="required">*</span></label>
+                  <input type="text" id="name" name="name" required placeholder="Your name">
+                </div>
+
+                <div class="form-group">
+                  <label for="email">Email <span class="required">*</span></label>
+                  <input type="email" id="email" name="email" required placeholder="your@email.com">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="organisation">Organisation</label>
+                  <input type="text" id="organisation" name="organisation" placeholder="Company or organisation name">
+                </div>
+
+                <div class="form-group">
+                  <label for="interest">Area of Interest</label>
+                  <select id="interest" name="interest">
+                    <option value="">Select an option</option>
+                    <option value="Executive Briefing">Executive Briefing</option>
+                    <option value="Team Workshop">Team Workshop</option>
+                    <option value="Transformation Programme">Transformation Programme</option>
+                    <option value="General Enquiry">General Enquiry</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message <span class="required">*</span></label>
+                <textarea id="message" name="message" required placeholder="Tell me about your situation, challenge, or question..."></textarea>
+              </div>
+
+              <div class="form-submit">
+                <button type="submit" class="btn btn--primary">Send Message</button>
+              </div>
+
+              <p class="form-note">
+                By submitting this form, you're starting a conversation. I'll respond via email and won't share your information with third parties.
+              </p>
+            </form>
+          </div>
+
+          <!-- Contact Info Sidebar -->
+          <div>
+            <div class="contact-info">
+              <div class="contact-info__item">
+                <p class="contact-info__label">Business Enquiries</p>
+                <p class="contact-info__value">Based in Leeds, West Yorkshire<br>Serving organisations across the UK</p>
+              </div>
+
+              <div class="contact-info__item">
+                <p class="contact-info__label">Email</p>
+                <p class="contact-info__value">
+                  <a href="mailto:wills.crump@45black.tech">wills.crump@45black.tech</a>
+                </p>
+              </div>
+
+              <div class="contact-info__item">
+                <p class="contact-info__label">Discovery Call</p>
+                <p class="contact-info__value">30-minute exploratory conversation<br>No obligation, no sales pressure</p>
+              </div>
+
+              <div class="contact-info__item">
+                <p class="contact-info__label">Response Time</p>
+                <p class="contact-info__value">Within 1-2 business days</p>
+              </div>
+            </div>
+
+            <div class="contact-legal" style="margin-top: var(--space-xl);">
+              <p class="contact-legal__title">Registered Office</p>
+              <p><strong>45BLACK LIMITED</strong></p>
+              <p>Company Number: 16860363</p>
+              <p>Registered in England & Wales</p>
+              <p style="margin-top: var(--space-lg);">
+                20 Wenlock Road<br>
+                London, England<br>
+                N1 7GU
+              </p>
+              <p style="margin-top: var(--space-md); font-style: italic;">
+                This is our registered office address for legal correspondence.<br>
+                For business enquiries, please use the contact form or email.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- What to Expect -->
+    <section class="section section--gray">
+      <div class="section__container">
+        <p class="label">What to Expect</p>
+        <h2>A straightforward process</h2>
+
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="process-step__number">1</div>
+            <h3 class="process-step__title">Initial conversation</h3>
+            <p class="process-step__desc">A no-obligation discussion to understand your situation, challenges, and objectives. We'll explore whether there's a good fit.</p>
+          </div>
+
+          <div class="process-step">
+            <div class="process-step__number">2</div>
+            <h3 class="process-step__title">Scoping & proposal</h3>
+            <p class="process-step__desc">If there's alignment, we'll define scope, deliverables, and approach. Clear terms, transparent pricing, no surprises.</p>
+          </div>
+
+          <div class="process-step">
+            <div class="process-step__number">3</div>
+            <h3 class="process-step__title">Collaboration</h3>
+            <p class="process-step__desc">Working together toward outcomes that matter. Regular communication, iterative delivery, and genuine partnership.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <div class="footer__wordmark">45BLACK</div>
+        <p class="footer__tagline">"Think systemically. Map precisely. Automate humanely."</p>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Services</p>
+        <ul class="footer__nav-list">
+          <li><a href="/methodology.html">Methodology</a></li>
+          <li><a href="/training.html">Training & Workshops</a></li>
+          <li><a href="/case-study.html">Case Study</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Company</p>
+        <ul class="footer__nav-list">
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__nav-title">Legal</p>
+        <ul class="footer__nav-list">
+          <li><a href="/privacy.html">Privacy Policy</a></li>
+          <li><a href="/terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__legal">&copy; 2025 45BLACK LIMITED (Company No. 16860363)</p>
+      <p class="footer__legal">Registered in England and Wales</p>
+      <p class="footer__legal">Registered Office: 20 Wenlock Road, London, England, N1 7GU</p>
+      <p class="footer__location">Operating from Leeds, West Yorkshire | Serving UK Organisations</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+
+    // Check for success parameter (redirect from FormSubmit)
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (urlParams.get('success') === 'true') {
+        // Show success message
+        document.getElementById('formSuccess').classList.remove('hidden');
+        // Hide the form
+        document.getElementById('contactForm').style.display = 'none';
+        // Scroll to message
+        document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Clean up URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    });
+  </script>
+
+</body>
+</html>
