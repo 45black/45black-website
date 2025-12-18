@@ -164,80 +164,7 @@
       font-size: 16px;
       color: rgba(255, 255, 255, 0.9);
       max-width: 500px;
-      margin: 0 auto var(--space-xl) auto;
-    }
-    .signup-form {
-      max-width: 450px;
       margin: 0 auto;
-    }
-    .signup-form__row {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-md);
-    }
-    @media (min-width: 500px) {
-      .signup-form__row {
-        flex-direction: row;
-      }
-    }
-    .signup-form__input {
-      flex: 1;
-      padding: 14px 16px;
-      font-family: var(--font-primary);
-      font-size: 16px;
-      color: var(--charcoal);
-      background: var(--white);
-      border: 2px solid transparent;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .signup-form__input:focus {
-      border-color: var(--saville-purple);
-      box-shadow: 0 0 0 3px rgba(123, 31, 162, 0.2);
-    }
-    .signup-form__input::placeholder {
-      color: var(--text-muted);
-    }
-    .signup-form__btn {
-      padding: 14px 28px;
-      font-family: var(--font-primary);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--saville-purple);
-      background: var(--white);
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.1s ease;
-      white-space: nowrap;
-    }
-    .signup-form__btn:hover {
-      background: var(--light-gray);
-    }
-    .signup-form__btn:active {
-      transform: scale(0.98);
-    }
-    .signup-form__note {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-top: var(--space-md);
-    }
-    .signup-form__honey {
-      position: absolute;
-      left: -9999px;
-    }
-    .signup-form__success {
-      background: rgba(255, 255, 255, 0.15);
-      padding: var(--space-lg);
-      margin-top: var(--space-lg);
-      display: none;
-    }
-    .signup-form__success.show {
-      display: block;
-    }
-    .signup-form__success p {
-      color: var(--white);
-      font-size: 16px;
-      margin: 0;
     }
     .methodology-link {
       display: flex;
@@ -454,36 +381,8 @@
         <!-- Coming Soon -->
         <div class="coming-soon-box">
           <span class="coming-soon-box__badge">Coming Soon</span>
-          <h4 class="coming-soon-box__title">Be the first to know when we launch</h4>
-          <p class="coming-soon-box__text">Conveyancing Companion is currently in final testing. Enter your email to be notified when the app goes live.</p>
-
-          <form id="signupForm" class="signup-form" action="https://formsubmit.co/wills.crump@45black.tech" method="POST">
-            <!-- FormSubmit configuration -->
-            <input type="hidden" name="_subject" value="Conveyancing Companion - Launch notification signup">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="https://45black.tech/conveyancing-companion.html?signup=success">
-
-            <!-- Honeypot for spam protection -->
-            <input type="text" name="_honey" class="signup-form__honey" tabindex="-1" autocomplete="off">
-
-            <div class="signup-form__row">
-              <input
-                type="email"
-                name="email"
-                class="signup-form__input"
-                placeholder="Enter your email address"
-                required
-                aria-label="Email address"
-              >
-              <button type="submit" class="signup-form__btn">Notify Me</button>
-            </div>
-            <p class="signup-form__note">No spam, just a single notification when we launch.</p>
-          </form>
-
-          <div id="signupSuccess" class="signup-form__success">
-            <p><strong>You're on the list!</strong> We'll email you when Conveyancing Companion launches.</p>
-          </div>
+          <h4 class="coming-soon-box__title">Launching Soon</h4>
+          <p class="coming-soon-box__text">Conveyancing Companion is currently in final testing and will be available shortly.</p>
         </div>
 
       </div>
@@ -550,22 +449,6 @@
     function toggleMobileNav() {
       document.getElementById('mobileNav').classList.toggle('active');
     }
-
-    // Check for signup success parameter (redirect from FormSubmit)
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-
-      if (urlParams.get('signup') === 'success') {
-        // Hide the form
-        document.getElementById('signupForm').style.display = 'none';
-        // Show success message
-        document.getElementById('signupSuccess').classList.add('show');
-        // Scroll to the success message
-        document.querySelector('.coming-soon-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Clean up URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-    });
   </script>
 
 </body>
