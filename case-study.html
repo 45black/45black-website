@@ -167,6 +167,46 @@
     .section--dark .note-box p {
       color: var(--text-secondary);
     }
+    .project-link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      padding: var(--space-xl);
+      background: var(--light-gray);
+      margin-top: var(--space-xl);
+      text-decoration: none;
+      transition: background 0.2s ease;
+      border-left: 4px solid var(--saville-purple);
+    }
+    .project-link:hover {
+      background: var(--medium-gray);
+    }
+    .project-link__badge {
+      display: inline-block;
+      background: var(--saville-purple);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      margin-bottom: var(--space-xs);
+    }
+    .project-link__title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-xs);
+    }
+    .project-link__desc {
+      font-size: 14px;
+      color: var(--dark-gray);
+    }
+    .project-link__arrow {
+      font-size: 20px;
+      color: var(--saville-purple);
+      margin-left: auto;
+    }
   </style>
 </head>
 <body>
@@ -327,6 +367,15 @@
             <p class="note-box__title">Note on Availability</p>
             <p>Apex Governance was built as a portfolio demonstration piece. If you're interested in pension governance tooling or similar applications, get in touch to discuss your specific needs.</p>
           </div>
+
+          <a href="/conveyancing-companion.html" class="project-link">
+            <div>
+              <span class="project-link__badge">Coming Soon</span>
+              <p class="project-link__title">Conveyancing Companion</p>
+              <p class="project-link__desc">AI-powered guide helping first-time buyers navigate UK property conveyancing</p>
+            </div>
+            <span class="project-link__arrow">&#8594;</span>
+          </a>
         </div>
 
       </div>
