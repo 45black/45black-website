@@ -30,6 +30,69 @@
     "priceRange": "£££"
   }
   </script>
+  <style>
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      margin-top: var(--space-2xl);
+    }
+    @media (min-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .product-card {
+      background: var(--white);
+      padding: var(--space-xl);
+      border-top: 4px solid var(--saville-blue);
+      text-decoration: none;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    .product-card--blue { border-top-color: var(--saville-blue); }
+    .product-card--purple { border-top-color: var(--saville-purple); }
+    .product-card__badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      margin-bottom: var(--space-md);
+    }
+    .product-card--blue .product-card__badge {
+      background: var(--saville-blue);
+      color: var(--white);
+    }
+    .product-card--purple .product-card__badge {
+      background: var(--saville-purple);
+      color: var(--white);
+    }
+    .product-card__title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: var(--space-sm);
+    }
+    .product-card__desc {
+      font-size: 15px;
+      color: var(--dark-gray);
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+    }
+    .product-card__link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--saville-blue);
+    }
+    .product-card--purple .product-card__link {
+      color: var(--saville-purple);
+    }
+  </style>
 </head>
 <body>
 
@@ -228,8 +291,33 @@
       </div>
     </section>
 
+    <!-- Products Section -->
+    <section class="section section--gray">
+      <div class="section__container">
+        <p class="label">See It In Action</p>
+        <h2>Products built with our methodology</h2>
+        <p class="body-lg max-w-medium">Real applications demonstrating how systemic thinking and targeted AI work together.</p>
+
+        <div class="products-grid">
+          <a href="/case-study.html" class="product-card product-card--blue">
+            <span class="product-card__badge">Case Study</span>
+            <h3 class="product-card__title">Apex Governance Platform</h3>
+            <p class="product-card__desc">AI-assisted compliance monitoring for UK pension trustees. Tracking 18 critical TPR controls with human oversight.</p>
+            <span class="product-card__link">View case study &#8594;</span>
+          </a>
+
+          <a href="/conveyancing-companion.html" class="product-card product-card--purple">
+            <span class="product-card__badge">Coming Soon</span>
+            <h3 class="product-card__title">Conveyancing Companion</h3>
+            <p class="product-card__desc">AI-powered guide helping first-time buyers navigate UK property conveyancing with confidence.</p>
+            <span class="product-card__link">Learn more &#8594;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA Section -->
-    <section class="section cta-section section--gray">
+    <section class="section cta-section section--light">
       <div class="section__container">
         <h2>Ready to think differently?</h2>
         <p class="body-lg">Let's discuss how 45black can help your organisation navigate AI transformation with systemic thinking at its core.</p>
