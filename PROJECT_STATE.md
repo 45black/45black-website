@@ -1,9 +1,9 @@
-# PROJECT STATE: 45black-website
+# PROJECT STATE: 45black Website
 
-## Status: INITIAL SETUP
+## Status: PRODUCTION
 
-**Last Updated:** 2025-12-26
-**Current Version:** 0.1.0
+**Last Updated:** 2025-12-28
+**Current Version:** 1.0.0
 
 ---
 
@@ -11,51 +11,56 @@
 
 | Item | Value |
 |------|-------|
-| **Local Path** | /Users/willscrump/Projects/45black-website |
-| **Repository** | [Add GitHub URL] |
-| **Deployment URL** | [Add deployment URL] |
+| **Local Path** | ~/Projects/45black/45black-website |
+| **Repository** | [github.com/45black/45black-website](https://github.com/45black/45black-website) |
+| **Production URL** | [45black.tech](https://45black.tech) |
 
 ---
 
-## Implementation Progress
+## Deployment
 
-### Phase 1: Foundation
-- [ ] Project structure created
-- [ ] Development environment configured
-- [ ] Basic CI/CD setup
-
-### Phase 2: Core Features
-- [ ] [Feature 1]
-- [ ] [Feature 2]
+| Environment | Platform | URL | Status |
+|-------------|----------|-----|--------|
+| **Production** | Cloudflare Pages | 45black.tech | Active |
 
 ---
 
-## Latest Session: 2025-12-26
-
-### Completed Tasks
-- Project initialized with standard structure
-
-### Next Session Priorities
-
-1. [Priority 1]
-2. [Priority 2]
-
----
-
-## Technology Stack
+## Tech Stack
 
 | Component | Technology | Status |
 |-----------|------------|--------|
-| **Framework** | static | Setup |
+| **Type** | Static HTML/CSS/JS | Production |
+| **Hosting** | Cloudflare Pages | Production |
+| **Domain** | 45black.tech | Active |
 
 ---
 
-## Known Issues
+## Site Structure
 
-| Issue | Severity | Status |
-|-------|----------|--------|
-| None yet | - | - |
+| Page | Path | Description |
+|------|------|-------------|
+| Homepage | `/` | Main landing page |
+| About | `/about.html` | Company info |
+| Contact | `/contact.html` | Contact form |
+| Case Studies | `/case-study.html` | Client work |
+| Conveyancing Companion | `/conveyancing-companion.html` | Product page |
+| Methodology | `/methodology.html` | Approach |
 
 ---
 
-*State file updated: 2025-12-26*
+## Deployment Process
+
+Automatic deployment via GitHub Actions on push to `main`:
+1. Push to GitHub
+2. Cloudflare Pages builds and deploys
+3. Live at 45black.tech
+
+---
+
+## No Environment Variables Required
+
+Fully static site - no server-side configuration needed.
+
+---
+
+*State file updated: 2025-12-28*
