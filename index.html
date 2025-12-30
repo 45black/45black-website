@@ -72,6 +72,11 @@
       background: var(--saville-purple);
       color: var(--white);
     }
+    .product-card--teal { border-top-color: var(--saville-teal); }
+    .product-card--teal .product-card__badge {
+      background: var(--saville-teal);
+      color: var(--white);
+    }
     .product-card__title {
       font-size: 20px;
       font-weight: 600;
@@ -91,6 +96,9 @@
     }
     .product-card--purple .product-card__link {
       color: var(--saville-purple);
+    }
+    .product-card--teal .product-card__link {
+      color: var(--saville-teal);
     }
   </style>
 </head>
@@ -306,6 +314,13 @@
             <span class="product-card__link">View case study &#8594;</span>
           </a>
 
+          <a href="https://graph.45black.tech" class="product-card product-card--teal">
+            <span class="product-card__badge">Live Demo</span>
+            <h3 class="product-card__title">Pensions Knowledge Graph</h3>
+            <p class="product-card__desc">Navigate 2,000+ UK pension obligations through an intelligent knowledge graph. Explore how regulation actually connects.</p>
+            <span class="product-card__link">Explore the graph &#8594;</span>
+          </a>
+
           <a href="/conveyancing-companion.html" class="product-card product-card--purple">
             <span class="product-card__badge">Coming Soon</span>
             <h3 class="product-card__title">Conveyancing Companion</h3>
@@ -347,6 +362,7 @@
       <div class="footer__nav">
         <p class="footer__nav-title">Products</p>
         <ul class="footer__nav-list">
+          <li><a href="https://graph.45black.tech">Pensions Knowledge Graph</a></li>
           <li><a href="/conveyancing-companion.html">Conveyancing Companion</a></li>
         </ul>
       </div>
