@@ -1,0 +1,255 @@
+/*
+ * 45black Agent Console
+ * Saville palette · IBM Plex · dark surfaces
+ * Mirrors css/style.css tokens from the main site.
+ */
+
+:root {
+  --saville-blue: #1565C0;
+  --saville-purple: #7B1FA2;
+  --saville-coral: #E65100;
+  --saville-teal: #2E8B8B;
+  --saville-orange: #F57C00;
+  --saville-green: #4A7C59;
+
+  --surface-900: #0A0A0A;
+  --surface-800: #141414;
+  --surface-700: #1A1A1A;
+  --surface-600: #242424;
+  --surface-500: #333333;
+  --surface-400: #4A4A4A;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #B8B8B8;
+  --text-muted: #888888;
+  --text-subtle: #666666;
+
+  --accent-primary: var(--saville-blue);
+  --accent-hover: #1976D2;
+
+  --font-primary: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  --color-bar-height: 6px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background: var(--surface-900);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.color-bar {
+  display: flex;
+  height: var(--color-bar-height);
+}
+.color-bar span { flex: 1; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-xl);
+  background: var(--surface-800);
+  border-bottom: 1px solid var(--surface-600);
+}
+
+.brand { display: flex; align-items: baseline; gap: var(--space-sm); }
+.brand-mark {
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--saville-blue);
+  letter-spacing: -0.02em;
+}
+.brand-word {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+}
+.brand-sub {
+  margin-left: var(--space-md);
+  color: var(--text-muted);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.health {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid var(--surface-500);
+  border-radius: 2px;
+}
+.health.ok { color: var(--saville-green); border-color: var(--saville-green); }
+.health.err { color: var(--saville-coral); border-color: var(--saville-coral); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: calc(100vh - 72px - var(--color-bar-height));
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--surface-800);
+  border-right: 1px solid var(--surface-600);
+  padding: var(--space-xl) var(--space-md);
+  overflow-y: auto;
+}
+.sidebar-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-sm);
+}
+.agent-list, .session-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.agent-list li, .session-list li {
+  padding: var(--space-sm) var(--space-md);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: all 0.1s;
+}
+.agent-list li:hover, .session-list li:hover {
+  background: var(--surface-700);
+  color: var(--text-primary);
+}
+.agent-list li.active {
+  background: var(--surface-700);
+  color: var(--text-primary);
+  border-left-color: var(--saville-blue);
+}
+.agent-list li .meta {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.agent-list li.loading, .session-list li.loading { cursor: default; color: var(--text-subtle); }
+
+/* Workspace */
+.workspace {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.workspace-header {
+  padding: var(--space-xl) var(--space-2xl) var(--space-lg);
+  border-bottom: 1px solid var(--surface-600);
+}
+.workspace-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.muted { color: var(--text-muted); font-size: 13px; margin-top: var(--space-xs); }
+
+.event-stream {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg) var(--space-2xl);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.event-stream .empty {
+  color: var(--text-subtle);
+  font-family: var(--font-primary);
+  text-align: center;
+  padding: var(--space-2xl);
+}
+
+.event {
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  background: var(--surface-800);
+  border-left: 2px solid var(--surface-500);
+  border-radius: 2px;
+}
+.event.user { border-left-color: var(--saville-blue); }
+.event.assistant { border-left-color: var(--saville-teal); }
+.event.tool_call { border-left-color: var(--saville-orange); background: var(--surface-700); }
+.event.tool_result { border-left-color: var(--saville-green); }
+.event.error { border-left-color: var(--saville-coral); color: var(--saville-coral); }
+.event .kind {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-xs);
+}
+.event .body { white-space: pre-wrap; word-wrap: break-word; }
+
+/* Composer */
+.composer {
+  border-top: 1px solid var(--surface-600);
+  background: var(--surface-800);
+  padding: var(--space-md) var(--space-2xl);
+}
+.composer textarea {
+  width: 100%;
+  background: var(--surface-700);
+  border: 1px solid var(--surface-500);
+  border-radius: 2px;
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  padding: var(--space-md);
+  resize: vertical;
+}
+.composer textarea:focus {
+  outline: none;
+  border-color: var(--saville-blue);
+}
+.composer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+.btn {
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--surface-500);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.btn:hover { border-color: var(--text-primary); }
+.btn-primary {
+  background: var(--saville-blue);
+  border-color: var(--saville-blue);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}

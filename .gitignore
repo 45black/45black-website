@@ -37,3 +37,7 @@ coverage/
 # Misc
 *.sqlite
 *.db
+
+# Agent console local state
+agent-console/.agent-ids.json
+agent-console/.cloudflared/

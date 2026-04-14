@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>45black — Agent Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/console.css" />
+</head>
+<body>
+  <div class="color-bar">
+    <span style="background:var(--saville-blue)"></span>
+    <span style="background:var(--saville-purple)"></span>
+    <span style="background:var(--saville-coral)"></span>
+    <span style="background:var(--saville-teal)"></span>
+    <span style="background:var(--saville-orange)"></span>
+    <span style="background:var(--saville-green)"></span>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">45</span>
+      <span class="brand-word">BLACK</span>
+      <span class="brand-sub">Agent Console</span>
+    </div>
+    <div class="health" id="health">checking…</div>
+  </header>
+
+  <main class="grid">
+    <aside class="sidebar">
+      <h2 class="sidebar-title">Agents</h2>
+      <ul class="agent-list" id="agent-list">
+        <li class="loading">loading…</li>
+      </ul>
+
+      <h2 class="sidebar-title" style="margin-top:var(--space-xl)">Recent sessions</h2>
+      <ul class="session-list" id="session-list">
+        <li class="loading">—</li>
+      </ul>
+    </aside>
+
+    <section class="workspace">
+      <header class="workspace-header">
+        <h1 id="agent-title">Select an agent</h1>
+        <p id="agent-desc" class="muted">Agents persist in Anthropic Managed Agents. Sessions survive reboots.</p>
+      </header>
+
+      <div class="event-stream" id="event-stream">
+        <div class="empty">No session selected.</div>
+      </div>
+
+      <form class="composer" id="composer">
+        <textarea id="composer-input" placeholder="Send a message, approve a draft, or ask for a status update…" rows="3"></textarea>
+        <div class="composer-actions">
+          <button type="button" id="new-session-btn" class="btn btn-secondary">New session</button>
+          <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="/static/console.js"></script>
+</body>
+</html>

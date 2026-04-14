@@ -1,0 +1,38 @@
+{
+  "_comment": "MCP server definitions shared between agents. Two deployment modes — see README for cloudflared tunnel setup.",
+  "servers": [
+    {
+      "name": "google-workspace",
+      "description": "Gmail + Google Calendar + Drive via the community google_workspace_mcp server.",
+      "transport": "http",
+      "url": "https://mcp.45black.tech/google-workspace",
+      "_local_dev_url": "http://127.0.0.1:8790/google-workspace",
+      "_tunnel": "cloudflared tunnel --url http://localhost:8790",
+      "auth": {
+        "type": "bearer",
+        "token_env": "MCP_GATEWAY_TOKEN"
+      },
+      "tools_allowlist": [
+        "gmail.list_messages",
+        "gmail.get_message",
+        "gmail.create_draft",
+        "gmail.modify_labels",
+        "calendar.list_events",
+        "calendar.create_event",
+        "calendar.update_event",
+        "calendar.freebusy"
+      ]
+    },
+    {
+      "name": "45black-tools",
+      "description": "Bespoke 45black tools: CRM lookups, invoice generation, GitHub pokes. Implemented as a local FastMCP server on the Mac mini.",
+      "transport": "http",
+      "url": "https://mcp.45black.tech/internal",
+      "_local_dev_url": "http://127.0.0.1:8791/internal",
+      "auth": {
+        "type": "bearer",
+        "token_env": "MCP_GATEWAY_TOKEN"
+      }
+    }
+  ]
+}

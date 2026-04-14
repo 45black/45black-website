@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  macOS launchd agent for the 45black Agent Console.
+
+  Install:
+    cp scripts/launchd.plist.example ~/Library/LaunchAgents/tech.45black.agent-console.plist
+    # edit paths below, then:
+    launchctl load ~/Library/LaunchAgents/tech.45black.agent-console.plist
+    launchctl start tech.45black.agent-console
+
+  The console will come back automatically after reboot and after crashes.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>tech.45black.agent-console</string>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jon/45black-website/agent-console</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/jon/45black-website/agent-console/.venv/bin/uvicorn</string>
+        <string>backend.main:app</string>
+        <string>--host</string>
+        <string>127.0.0.1</string>
+        <string>--port</string>
+        <string>8787</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/jon/Library/Logs/45black-agent-console.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/jon/Library/Logs/45black-agent-console.err.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+    </dict>
+</dict>
+</plist>
