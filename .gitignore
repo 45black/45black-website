@@ -44,6 +44,7 @@ agent-console/.cloudflared/
 agent-console/harness.sqlite
 agent-console/harness.sqlite-wal
 agent-console/harness.sqlite-shm
+agent-console/scripts/client_secret.json
 
 # Terraform state
 agent-console/deploy/terraform/.terraform/

@@ -7,8 +7,16 @@ python-dotenv>=1.0
 # Inference — Gemini / Vertex AI
 google-genai>=0.3
 
+# Google Workspace direct tools (Gmail + Calendar)
+google-api-python-client>=2.100
+google-auth>=2.27
+google-auth-oauthlib>=1.2
+
 # Persistence — optional, only needed for STORE_BACKEND=firestore
 google-cloud-firestore>=2.18
+
+# Secrets — optional, only needed for Secret Manager on GCP
+google-cloud-secret-manager>=2.18
 
 # Optional — only needed if you also want to use the Claude harness.
 anthropic>=0.40

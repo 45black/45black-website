@@ -47,3 +47,18 @@ spec:
                 secretKeyRef:
                   name: mcp-gateway-token
                   key: latest
+            - name: GMAIL_OAUTH_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: gmail-oauth-refresh-token
+                  key: latest
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth-client-id
+                  key: latest
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth-client-secret
+                  key: latest

@@ -34,6 +34,7 @@ from google.genai import types
 
 from .mcp_bridge import MCPBridge
 from .store import AgentStore, make_store
+from . import google_tools
 
 log = logging.getLogger(__name__)
 
@@ -253,7 +254,24 @@ class GeminiHarness:
         if "web_search" in builtin_types:
             tools.append(types.Tool(google_search=types.GoogleSearch()))
 
+        # Native Google Workspace tools (direct API, no MCP).
+        if google_tools.available():
+            for d in google_tools.DECLARATIONS:
+                fn_declarations.append(
+                    types.FunctionDeclaration(
+                        name=d["name"],
+                        description=d.get("description", ""),
+                        parameters_json_schema=d.get("parameters"),
+                    )
+                )
+            log.info("Google Workspace tools: %d registered", len(google_tools.DECLARATIONS))
+        else:
+            log.info("Google Workspace tools: unavailable (no OAuth token), falling back to MCP")
+
+        # MCP tools (for anything not covered by native tools).
         for d in self._mcp.discover():
+            if d["name"] in google_tools.TOOLS:
+                continue  # native tool takes priority
             fn_declarations.append(
                 types.FunctionDeclaration(
                     name=d["name"],
@@ -272,6 +290,8 @@ class GeminiHarness:
     ) -> dict[str, Any]:
         if name == "bash":
             return _run_bash(args.get("command", ""))
+        if name in google_tools.TOOLS:
+            return google_tools.dispatch(name, args)
         return self._mcp.call(name, args)
 
     def _kick_turn(self, session_id: str) -> None:
