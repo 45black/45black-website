@@ -1,0 +1,43 @@
+# Cloud Scheduler jobs that trigger the agent ticks.
+#
+# Each job POSTs to the Cloud Run service's /api/tick endpoint, which
+# starts a fresh session for the named agent. OIDC auth is used so the
+# scheduler identity (agent-scheduler@...) can call the authenticated
+# Cloud Run service.
+#
+# Apply:
+#   deploy/apply-scheduler.sh  (wraps gcloud scheduler jobs create/update)
+
+# Every 30 min, Mon–Fri, 07:00–19:00 UK time.
+email_triage:
+  name: email-triage
+  schedule: "*/30 7-18 * * 1-5"
+  time_zone: Europe/London
+  http_target:
+    uri: "${SERVICE_URL}/api/tick"
+    http_method: POST
+    headers:
+      Content-Type: application/json
+    body_json:
+      slug: email-triage
+      message: "Triage new mail in the 45black inbox."
+    oidc_token:
+      service_account_email: agent-scheduler@${PROJECT_ID}.iam.gserviceaccount.com
+      audience: "${SERVICE_URL}"
+
+# Weekday morning briefing at 07:30.
+morning_briefing:
+  name: morning-briefing
+  schedule: "30 7 * * 1-5"
+  time_zone: Europe/London
+  http_target:
+    uri: "${SERVICE_URL}/api/tick"
+    http_method: POST
+    headers:
+      Content-Type: application/json
+    body_json:
+      slug: calendar-assistant
+      message: "Give me my morning briefing for today."
+    oidc_token:
+      service_account_email: agent-scheduler@${PROJECT_ID}.iam.gserviceaccount.com
+      audience: "${SERVICE_URL}"

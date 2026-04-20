@@ -1,0 +1,9 @@
+.venv
+__pycache__
+*.pyc
+.env
+.env.*
+.agent-ids.json
+harness.sqlite*
+deploy/terraform/.terraform
+deploy/terraform/*.tfstate*

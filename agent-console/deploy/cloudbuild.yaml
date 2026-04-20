@@ -1,0 +1,62 @@
+# Cloud Build config: build image, push to Artifact Registry, deploy to Cloud Run.
+#
+# Prereqs (one-off, see deploy/README.md):
+#   gcloud services enable run.googleapis.com cloudbuild.googleapis.com \
+#     artifactregistry.googleapis.com aiplatform.googleapis.com \
+#     firestore.googleapis.com secretmanager.googleapis.com
+#   gcloud artifacts repositories create agents \
+#     --repository-format=docker --location=europe-west1
+#   # Firestore database in Native mode, europe-west1 location.
+#
+# Trigger:
+#   gcloud builds submit --config deploy/cloudbuild.yaml
+
+substitutions:
+  _REGION: europe-west1
+  _REPO: agents
+  _SERVICE: console
+  _IMAGE: ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO}/${_SERVICE}
+
+steps:
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - deploy/Dockerfile
+      - -t
+      - ${_IMAGE}:${SHORT_SHA}
+      - -t
+      - ${_IMAGE}:latest
+      - .
+
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args: [push, --all-tags, "${_IMAGE}"]
+
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=${_IMAGE}:${SHORT_SHA}
+      - --region=${_REGION}
+      - --platform=managed
+      - --no-allow-unauthenticated
+      - --service-account=agent-console@${PROJECT_ID}.iam.gserviceaccount.com
+      - --set-env-vars=GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${_REGION},GEMINI_USE_VERTEX=1,STORE_BACKEND=firestore,AGENT_HARNESS=gemini
+      - --min-instances=0
+      - --max-instances=3
+      - --memory=512Mi
+      - --cpu=1
+      - --timeout=300
+      - --concurrency=20
+
+images:
+  - ${_IMAGE}:${SHORT_SHA}
+  - ${_IMAGE}:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY

@@ -1,0 +1,49 @@
+# Declarative Cloud Run service spec. Alternative to the inline flags in
+# cloudbuild.yaml — use if you prefer `gcloud run services replace`.
+#
+# Apply:
+#   envsubst < deploy/service.yaml | gcloud run services replace -
+#
+# Required env vars for envsubst: PROJECT_ID, REGION, IMAGE_TAG
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: console
+  annotations:
+    run.googleapis.com/launch-stage: GA
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/maxScale: "3"
+        run.googleapis.com/startup-cpu-boost: "true"
+    spec:
+      serviceAccountName: agent-console@${PROJECT_ID}.iam.gserviceaccount.com
+      containerConcurrency: 20
+      timeoutSeconds: 300
+      containers:
+        - image: europe-west1-docker.pkg.dev/${PROJECT_ID}/agents/console:${IMAGE_TAG}
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          env:
+            - name: GOOGLE_CLOUD_PROJECT
+              value: ${PROJECT_ID}
+            - name: GOOGLE_CLOUD_LOCATION
+              value: ${REGION}
+            - name: GEMINI_USE_VERTEX
+              value: "1"
+            - name: STORE_BACKEND
+              value: firestore
+            - name: AGENT_HARNESS
+              value: gemini
+            - name: MCP_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-gateway-token
+                  key: latest

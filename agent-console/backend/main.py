@@ -83,6 +83,19 @@ def get_agent(slug: str) -> dict[str, Any]:
     return json.loads(f.read_text())
 
 
+@app.post("/api/agents/register")
+def register_agent(body: dict[str, Any]) -> dict[str, Any]:
+    """Register an agent definition with the current harness.
+
+    Idempotent — a slug that already exists is updated in place. Called
+    once per agent after deploy. Body is the full agent JSON (same shape
+    as the files in ``agents/``).
+    """
+    if "name" not in body:
+        raise HTTPException(400, "definition must include a 'name' field")
+    return mgr.register(body)
+
+
 @app.get("/api/sessions")
 def list_sessions(agent_id: str | None = None) -> dict[str, Any]:
     return {"data": mgr.list_sessions(agent_id=agent_id)}
@@ -119,6 +132,25 @@ async def stream(session_id: str) -> StreamingResponse:
             return
 
     return StreamingResponse(gen(), media_type="text/event-stream")
+
+
+@app.post("/api/tick")
+def tick(body: dict[str, Any]) -> dict[str, Any]:
+    """Scheduled trigger — creates a session and fires a single user event.
+
+    Called by Cloud Scheduler (OIDC-authenticated). Body shape::
+
+        {"slug": "email-triage", "message": "Triage new mail"}
+
+    Returns the new session id so scheduler logs can trace the run.
+    """
+    slug = body.get("slug")
+    message = body.get("message", "Run your scheduled task.")
+    if not slug:
+        raise HTTPException(400, "slug required")
+    session = mgr.create_session(slug, metadata={"source": "scheduler", "slug": slug})
+    mgr.send_event(session["id"], message)
+    return {"session_id": session["id"], "slug": slug}
 
 
 @app.get("/api/health")

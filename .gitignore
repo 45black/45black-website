@@ -44,3 +44,10 @@ agent-console/.cloudflared/
 agent-console/harness.sqlite
 agent-console/harness.sqlite-wal
 agent-console/harness.sqlite-shm
+
+# Terraform state
+agent-console/deploy/terraform/.terraform/
+agent-console/deploy/terraform/*.tfstate
+agent-console/deploy/terraform/*.tfstate.*
+agent-console/deploy/terraform/.terraform.lock.hcl
+agent-console/deploy/terraform/tfplan

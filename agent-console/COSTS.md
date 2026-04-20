@@ -154,31 +154,110 @@ Strip out the inflated numbers and this is the honest case:
    exists, but adding an always-on stateful agent loop to it adds
    maintenance weight — it's not just a static site anymore.
 
-## 7. Revised recommendation
+## 6b. Option C — Gemini 3 Pro on Google Cloud (Cloud Run + Vertex AI)
 
-**Start on the droplet path, not Managed Agents.**
+Added after the Mac mini path was live — Jon asked "can we run this on
+gcloud?". Honest picture:
 
-You're already paying for the droplet and the subs. Build/install a
-harness (OpenHands, Letta, or a slim custom FastAPI + Gemini CLI loop)
-alongside whatever the droplet already runs. Point it at Gemini via CLI
-auth, use the Cloudflare tunnel to reach the Mac mini's MCPs. Marginal
-cost ~£0/month.
+### Infrastructure at 45black's workload
 
-The console frontend + MCP config + agent definitions + launchd wiring
-from this scaffold all port across unchanged — only the backend LLM
-adapter changes. A `backend/gemini_harness.py` sketch is in this repo.
+| Line | Monthly | Why free |
+|------|---------|----------|
+| Cloud Run (min=0, ~2 vCPU-hours/mo) | £0 | Inside 180 vCPU-hours free tier |
+| Firestore (~15k writes, 50k reads/mo) | £0 | Inside 20k writes/day, 50k reads/day free tier |
+| Cloud Scheduler (2 jobs) | £0 | First 3 jobs free |
+| Secret Manager (≤6 secrets) | £0 | First 6 active secret versions free |
+| Artifact Registry (1 image, ~300 MB) | ~£0.01 | 0.5 GB free + £0.10/GB-month |
+| Cloud Logging | £0 | First 50 GB/mo free |
+| Networking egress | ~£0.01 | Mostly inside GCP |
+| **Infra subtotal** | **~£0.02 / month** | |
 
-**Move to Managed Agents later if:**
+### Inference on Vertex AI Gemini 3 Pro
 
-- Gemini quota trips more than a couple of times a month (rate limits
-  during actual work hurt more than a small cash cost).
-- You find yourself spending weekends on harness maintenance rather than
-  on 45black work — at that point Managed Agents' £18–£45/month is worth
-  it to offload state and recovery.
-- You want Claude's specific draft-writing quality on the client-facing
-  outbound mail, in which case consider a **hybrid**: Gemini on the droplet
-  for triage/classification, Managed Agents (or raw Anthropic API) called
-  selectively from the droplet when a human-quality draft is needed.
+Same token prices as AI Studio's paid tier (April 2026 indicative):
+- ~$1.25 / M input, ~$10 / M output
+- 75% discount on cached input
+
+At the honest workload (9M input / 2M output monthly) with caching on:
+
+- Input: 2.7 × $1.25 + 6.3 × $0.31 = $5.35
+- Output: 2 × $10 = $20
+- **~$25 / month ≈ £20 / month**
+
+Without caching: **~£30 / month**.
+
+### Important: subscription does *not* reduce this
+
+Google One AI Premium / Google AI Pro / Workspace AI subscriptions
+**cover the Gemini app surface, not Vertex AI API quota**. The
+subscription stays useful (Gemini in Gmail sidebar, NotebookLM,
+Gemini.app) but Vertex AI is billed through the GCP billing account
+you link to the project — separate ledger, separate line item.
+
+### Free credit
+
+New GCP projects get **$300 of credit for 90 days** on first signup.
+At this workload that covers roughly the first six months of inference
+outright. After credit exhausts, Vertex AI is the only meaningful
+recurring line item.
+
+### Total gcloud path
+
+- Month 1–6 (inside free credit): **~£0 / month**
+- Steady state: **~£20–£30 / month**
+
+Higher than the Mac-mini-plus-AI-Studio path but with real advantages:
+
+1. No always-on box to maintain. Scale-to-zero when idle.
+2. EU data residency out of the box (`europe-west1`, Belgium) —
+   friendlier to pension data compliance.
+3. Terraform-managed infra, redeployable from scratch.
+4. IAP auth in front of the console — Google login gates access.
+5. Secret Manager replaces `.env` for credentials.
+6. Easier to share with a future team member without giving them
+   Mac-mini access.
+
+## 7. Revised recommendation — three-way
+
+| Path | Monthly (steady) | Ops burden | Data residency | Professionalism |
+|------|------------------|------------|----------------|-----------------|
+| **A.** Managed Agents (Claude) | £18–£45 | near zero | US/EU (cloud region) | managed service |
+| **B.** Droplet + Gemini (AI Studio) | £0–£5 marginal | 5–10h/mo you own | your choice (droplet region) | DIY |
+| **C.** Cloud Run + Vertex AI (Gemini) | £0 for 6 mo then £20–£30 | near zero after setup | EU (`europe-west1`) | production-grade GCP |
+
+**Choose C (Cloud Run + Vertex) if:** you want a deploy-once-forget-it
+production setup with proper auth, no always-on box, and EU data
+residency. Pay a modest cash premium for significant reduction in
+ongoing ops work.
+
+**Choose B (droplet + AI Studio) if:** minimising monthly cash is the
+top priority and you enjoy owning the harness / don't mind occasional
+rate-limit hiccups.
+
+**Choose A (Managed Agents) if:** Claude's specific agent quality on
+client-facing outbound mail justifies the premium over Gemini, and you
+don't want any local persistence to maintain.
+
+### Recommended default now: **Option C (Cloud Run + Vertex AI)**
+
+Reasoning:
+
+1. For pension-tech consulting, EU data residency + IAP-gated console is
+   closer to what clients will expect if they ever ask "how do you
+   handle this". The droplet path doesn't give you that for free.
+2. £300 free credit covers ~6 months of inference — real-world testing
+   is effectively free to start.
+3. After free credit, £20–£30/mo is within the cost of a decent meal.
+   For something that triages your inbox for 10+ hours of output a week,
+   that's fine.
+4. The code is dual-mode — starting on C doesn't lock you out of B. You
+   can flip back by swapping two env vars and the SQLite file will still
+   be there.
+
+**Hybrid worth considering:** run Gemini on Cloud Run for triage /
+classification, and call Claude (Anthropic API or Managed Agents) only
+for client-facing outbound draft composition. Best quality per pound.
+Keep one billing ledger for each provider.
 
 ## 8. Cost levers either way
 
