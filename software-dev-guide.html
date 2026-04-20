@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Development — A Visual Guide</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --bg-alt: #171a21;
+      --card: #1c2029;
+      --border: #2a2f3a;
+      --text: #e8ebf0;
+      --text-dim: #9aa3b2;
+      --accent: #4ea1ff;
+      --accent-2: #9d7bff;
+      --green: #3fc97a;
+      --orange: #ffa94d;
+      --red: #ff6b6b;
+      --mono: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    header.hero {
+      text-align: center;
+      padding: 40px 0 60px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin: 0 0 12px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin: 60px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    p { color: var(--text); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+    }
+
+    pre.diagram {
+      background: #0a0c10;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #d4d9e1;
+      white-space: pre;
+    }
+
+    code {
+      font-family: var(--mono);
+      background: var(--bg-alt);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: var(--accent);
+    }
+
+    .definition {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 14px;
+      margin: 16px 0;
+    }
+
+    .definition dt {
+      font-weight: 600;
+      color: var(--accent-2);
+    }
+
+    .definition dd {
+      margin: 0;
+      color: var(--text-dim);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: var(--card);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg-alt);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 640px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+
+    .tag-green { background: rgba(63, 201, 122, 0.15); color: var(--green); }
+    .tag-orange { background: rgba(255, 169, 77, 0.15); color: var(--orange); }
+    .tag-blue { background: rgba(78, 161, 255, 0.15); color: var(--accent); }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--bg-alt);
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin: 16px 0;
+      color: var(--text-dim);
+    }
+
+    .toc {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .toc h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+      columns: 2;
+      column-gap: 30px;
+    }
+
+    @media (max-width: 640px) {
+      .toc ol { columns: 1; }
+    }
+
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.9;
+    }
+
+    .toc a:hover { color: var(--accent); }
+
+    footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="hero">
+      <h1>The Software Development Lifecycle</h1>
+      <p class="subtitle">A visual guide to the terms, tools, and processes that move code from idea to production.</p>
+    </header>
+
+    <nav class="toc">
+      <h3>Contents</h3>
+      <ol>
+        <li><a href="#big-picture">The Big Picture (E2E Flow)</a></li>
+        <li><a href="#git">Version Control (Git)</a></li>
+        <li><a href="#pr">Pull Request (PR)</a></li>
+        <li><a href="#cicd">CI/CD</a></li>
+        <li><a href="#environments">Environments</a></li>
+        <li><a href="#serverless">Serverless</a></li>
+        <li><a href="#containers">Containers &amp; Docker</a></li>
+        <li><a href="#architecture">Microservices vs Monolith</a></li>
+        <li><a href="#api">APIs</a></li>
+        <li><a href="#iac">Infrastructure as Code</a></li>
+        <li><a href="#e2e">A Day in the Life</a></li>
+        <li><a href="#observability">Observability &amp; Monitoring</a></li>
+      </ol>
+    </nav>
+
+    <section id="big-picture">
+      <h2><span class="num">1</span>The Big Picture (E2E Flow)</h2>
+      <p>Every piece of software follows roughly the same journey from conception to the hands of users.</p>
+<pre class="diagram">
+  💡 IDEA → 📋 PLAN → 💻 CODE → 🔍 REVIEW → 🧪 TEST → 📦 BUILD → 🚀 DEPLOY → 📊 MONITOR
+     │         │         │          │          │         │          │          │
+     ▼         ▼         ▼          ▼          ▼         ▼          ▼          ▼
+  "What if   Tickets   Writing    PRs &amp;      Does it   Package   Ship to    Is it
+   we..."    &amp; specs   the code   feedback   work?     it up     users      healthy?
+</pre>
+    </section>
+
+    <section id="git">
+      <h2><span class="num">2</span>Version Control (Git)</h2>
+      <p>Think of Git as a <strong>save game system</strong> for your code — branching timelines you can merge back together.</p>
+<pre class="diagram">
+  main (production-ready code)
+  ━━━━●━━━━━━━━●━━━━━━━━━━━━●━━━━━━━━●━━━━━━━━►
+       │                      ▲        ▲
+       │  feature/login       │        │
+       └──●───●───●───●──────┘        │
+                      │                │
+                      │  hotfix/crash  │
+                      └──●─────────────┘
+
+  ● = a commit (a snapshot of your code at a point in time)
+  ━ = branch (a parallel timeline)
+</pre>
+      <dl class="definition">
+        <dt>Branch</dt>
+        <dd>A parallel copy of the code where you work without disturbing others.</dd>
+        <dt>Commit</dt>
+        <dd>A saved checkpoint — "here's what I changed and why."</dd>
+        <dt>Merge</dt>
+        <dd>Bringing your branch back into the main timeline.</dd>
+      </dl>
+    </section>
+
+    <section id="pr">
+      <h2><span class="num">3</span>Pull Request (PR)</h2>
+      <p>A PR is a <strong>"please review my work"</strong> request before code enters the main branch.</p>
+<pre class="diagram">
+  ┌─────────────────────────────────────────────┐
+  │  PR #42: Add user login page                │
+  ├─────────────────────────────────────────────┤
+  │                                             │
+  │  Author: Alice        Reviewers: Bob, Carol │
+  │  Branch: feature/login → main               │
+  │                                             │
+  │  Files changed: 5     +120 lines  -30 lines │
+  │  ┌───────────────────────────────────────┐  │
+  │  │  - old code (red)                     │  │
+  │  │  + new code (green)                   │  │
+  │  └───────────────────────────────────────┘  │
+  │                                             │
+  │  Bob:   "Looks good, but add validation"    │
+  │  Alice: "Fixed! Updated the PR"             │
+  │  Carol: "Approved ✓"                        │
+  │                                             │
+  │  [  Merge PR  ]                             │
+  └─────────────────────────────────────────────┘
+</pre>
+    </section>
+
+    <section id="cicd">
+      <h2><span class="num">4</span>CI/CD (Continuous Integration / Deployment)</h2>
+      <p>A <strong>robot assembly line</strong> that automatically checks and ships your code.</p>
+<pre class="diagram">
+  You push code
+       │
+       ▼
+  ┌──────────────────── CI (Continuous Integration) ────────────────────┐
+  │                                                                     │
+  │   📥 Pull code → 🔨 Build → 🧪 Run tests → 🔍 Lint/Style check      │
+  │                                                                     │
+  │   Any step fails? ──── ❌ STOP. Notify developer.                   │
+  │   All pass?       ──── ✅ Continue...                               │
+  │                                                                     │
+  └──────────────────────────────┬──────────────────────────────────────┘
+                                 │
+                                 ▼
+  ┌──────────────────── CD (Continuous Deployment) ─────────────────────┐
+  │                                                                     │
+  │   📦 Package app → 🚢 Deploy to staging → ✅ Deploy to production   │
+  │                                                                     │
+  └─────────────────────────────────────────────────────────────────────┘
+</pre>
+      <div class="callout">
+        <strong>CI</strong> = "Does my code break anything?" (automated checking)<br>
+        <strong>CD</strong> = "Ship it automatically if everything's green."
+      </div>
+    </section>
+
+    <section id="environments">
+      <h2><span class="num">5</span>Environments</h2>
+      <p>Code travels through <strong>stages</strong> before reaching real users.</p>
+<pre class="diagram">
+  ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────────┐
+  │  LOCAL  │ ──► │   DEV   │ ──► │ STAGING │ ──► │ PRODUCTION  │
+  │         │     │         │     │         │     │             │
+  │ Your    │     │ Shared  │     │ Mirror  │     │ Real users  │
+  │ laptop  │     │ dev     │     │ of prod │     │ live here   │
+  │         │     │ server  │     │ "dress  │     │             │
+  │         │     │         │     │ rehearsal"    │             │
+  └─────────┘     └─────────┘     └─────────┘     └─────────────┘
+   "works on       "does it         "final            "the real
+    my machine"    work with        check"             deal"
+                   others?"
+</pre>
+    </section>
+
+    <section id="serverless">
+      <h2><span class="num">6</span>Serverless</h2>
+      <p>Despite the name, there <strong>are</strong> servers — you just don't manage them.</p>
+      <div class="compare">
+        <div class="card">
+          <h4 style="margin-top:0;">Traditional Server</h4>
+<pre class="diagram" style="font-size: 0.75rem;">
+┌──────────────────┐
+│  Your Server     │
+│  ┌────────────┐  │
+│  │ Your Code  │  │
+│  └────────────┘  │
+│                  │
+│  Running 24/7    │
+│  even when idle  │
+│  💰💰💰           │
+│  You manage OS,  │
+│  updates, scaling│
+└──────────────────┘
+</pre>
+        </div>
+        <div class="card">
+          <h4 style="margin-top:0;">Serverless</h4>
+<pre class="diagram" style="font-size: 0.75rem;">
+Request comes in
+      │
+      ▼
+┌──────────┐
+│ Function │  ← spins up
+│ runs     │
+│ responds │
+└──────────┘  ← shuts down
+
+No request? Nothing runs.
+💰 (pay per use only)
+Cloud handles the rest.
+</pre>
+        </div>
+      </div>
+      <p style="color: var(--text-dim);">Examples: AWS Lambda, Cloudflare Workers, Vercel Functions.</p>
+    </section>
+
+    <section id="containers">
+      <h2><span class="num">7</span>Containers &amp; Docker</h2>
+      <p>A container is a <strong>lunchbox for your app</strong> — everything it needs, packed together.</p>
+<pre class="diagram">
+  ┌─────────── Container ───────────┐
+  │                                 │
+  │   Your App                      │
+  │   + Dependencies (Node, etc.)   │
+  │   + Config files                │
+  │   + System libraries            │
+  │                                 │
+  │   "Everything needed to run,    │
+  │    identical everywhere"        │
+  │                                 │
+  └─────────────────────────────────┘
+
+  Works on my machine ──► Works EVERYWHERE
+  (dev, staging, prod — all identical)
+</pre>
+      <dl class="definition">
+        <dt>Dockerfile</dt><dd>The recipe.</dd>
+        <dt>Image</dt><dd>The packaged lunchbox.</dd>
+        <dt>Container</dt><dd>A running instance of that lunchbox.</dd>
+      </dl>
+    </section>
+
+    <section id="architecture">
+      <h2><span class="num">8</span>Microservices vs Monolith</h2>
+<pre class="diagram">
+  MONOLITH                          MICROSERVICES
+  ━━━━━━━━                          ━━━━━━━━━━━━━
+
+  ┌──────────────────┐       ┌──────┐  ┌──────┐  ┌──────┐
+  │                  │       │ Auth │  │ Pay- │  │ Noti-│
+  │  Auth            │       │      │  │ ment │  │ fica-│
+  │  Payment         │       └──┬───┘  └──┬───┘  │ tion │
+  │  Notifications   │          │         │      └──┬───┘
+  │  User Profile    │          └────┬────┘         │
+  │  Search          │               │              │
+  │                  │          ┌────┴────┐         │
+  │  ALL IN ONE BOX  │          │ API GW  │◄────────┘
+  └──────────────────┘          └─────────┘
+
+  One big app.                  Many small apps that
+  Simple to start,              talk to each other.
+  hard to scale one part.       Complex, but each piece
+                                scales independently.
+</pre>
+    </section>
+
+    <section id="api">
+      <h2><span class="num">9</span>API (Application Programming Interface)</h2>
+      <p>A <strong>menu at a restaurant</strong> — you don't go into the kitchen, you just order.</p>
+<pre class="diagram">
+  Your App                          Someone's Server
+  ━━━━━━━━                          ━━━━━━━━━━━━━━━
+
+  "I'd like the                ┌────────────────────┐
+   weather for London"         │                    │
+        │                      │   🍳 Kitchen       │
+        │   GET /weather       │   (complex logic,  │
+        │   ?city=London       │    databases, etc.)│
+        ├─────────────────────►│                    │
+        │                      │   You don't see    │
+        │   { "temp": 15,      │   any of this      │
+        │     "sky": "cloudy"} │                    │
+        │◄─────────────────────┤                    │
+        │                      └────────────────────┘
+  "Thanks, I'll display
+   that to my user"
+</pre>
+      <dl class="definition">
+        <dt>REST</dt><dd>Uses HTTP verbs (GET, POST, PUT, DELETE) like web addresses.</dd>
+        <dt>GraphQL</dt><dd>You specify exactly what data you want back.</dd>
+        <dt>Webhook</dt><dd>Reverse API — the server calls YOU when something happens.</dd>
+      </dl>
+    </section>
+
+    <section id="iac">
+      <h2><span class="num">10</span>Infrastructure as Code (IaC)</h2>
+      <p>Instead of clicking buttons in a dashboard, you <strong>describe your infrastructure in files</strong>.</p>
+      <div class="compare">
+        <div class="card">
+          <h4 style="margin-top:0;">Manual (ClickOps)</h4>
+<pre class="diagram" style="font-size: 0.8rem;">
+👆 Click "Create Server"
+👆 Click "Add Database"
+👆 Click "Set Firewall"
+👆 Forget what you did
+👆 Can't reproduce it
+</pre>
+        </div>
+        <div class="card">
+          <h4 style="margin-top:0;">IaC (Terraform)</h4>
+<pre class="diagram" style="font-size: 0.8rem;">
+resource "server" {
+  cpu      = 4
+  memory   = "16GB"
+  database = true
+  firewall = ["443","80"]
+}
+
+$ terraform apply
+✅ Reproducible. Versioned.
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="e2e">
+      <h2><span class="num">11</span>The Full E2E Flow — A Day in the Life</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Step</th><th>What happens</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Ticket</strong></td><td>"Users can't reset passwords" (Jira / Linear)</td></tr>
+          <tr><td>2</td><td><strong>Branch</strong></td><td><code>git checkout -b fix/password-reset</code></td></tr>
+          <tr><td>3</td><td><strong>Code</strong></td><td>Write the fix locally</td></tr>
+          <tr><td>4</td><td><strong>Test</strong></td><td>Run tests locally: <code>npm test</code></td></tr>
+          <tr><td>5</td><td><strong>Commit</strong></td><td><code>git commit -m "Fix password reset flow"</code></td></tr>
+          <tr><td>6</td><td><strong>Push</strong></td><td><code>git push origin fix/password-reset</code></td></tr>
+          <tr><td>7</td><td><strong>PR</strong></td><td>Open Pull Request, request review</td></tr>
+          <tr><td>8</td><td><strong>CI runs</strong></td><td>Robot builds &amp; tests automatically <span class="tag tag-green">✅</span> <span class="tag tag-orange">❌</span></td></tr>
+          <tr><td>9</td><td><strong>Code review</strong></td><td>Teammate reads code, leaves comments</td></tr>
+          <tr><td>10</td><td><strong>Merge</strong></td><td>PR approved → merge to main</td></tr>
+          <tr><td>11</td><td><strong>CD deploys</strong></td><td>Automatically ships to staging → production</td></tr>
+          <tr><td>12</td><td><strong>Monitor</strong></td><td>Watch dashboards, logs, error tracking</td></tr>
+          <tr><td>13</td><td><strong>Done</strong></td><td><span class="tag tag-green">✅</span> Ticket closed, users can reset passwords</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="observability">
+      <h2><span class="num">12</span>Observability &amp; Monitoring</h2>
+      <p>What happens <strong>after</strong> you deploy.</p>
+<pre class="diagram">
+  ┌─── Your Production App ───┐
+  │                           │
+  │    📊 Metrics             │──► "CPU is at 80%"
+  │    (numbers over time)    │
+  │                           │
+  │    📝 Logs                │──► "Error: DB timeout at 14:32"
+  │    (event journal)        │
+  │                           │
+  │    🔗 Traces              │──► "Request took 3.2s:
+  │    (request journey)      │     API→Auth→DB→Response"
+  │                           │
+  └───────────────────────────┘
+           │
+           ▼
+     🚨 ALERT: "Error rate > 5%"
+         → PagerDuty → Dev's phone → Fix it!
+</pre>
+    </section>
+
+    <footer>
+      A visual reference for the software development lifecycle.
+    </footer>
+
+  </div>
+</body>
+</html>
