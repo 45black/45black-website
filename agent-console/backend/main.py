@@ -17,10 +17,21 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
-from .managed_agents import ManagedAgents
+
+# Harness selection. The frontend is harness-agnostic — both modules expose
+# the same agent/session/event surface. See COSTS.md for the trade-off.
+#
+#   AGENT_HARNESS=claude   → Anthropic Managed Agents (cloud-managed state)
+#   AGENT_HARNESS=gemini   → local SQLite + Gemini 3 Pro (droplet path)
+import os
+
+if os.environ.get("AGENT_HARNESS", "claude") == "gemini":
+    from .gemini_harness import GeminiHarness as _Harness
+else:
+    from .managed_agents import ManagedAgents as _Harness
 
 app = FastAPI(title="45black Agent Console", version="0.1.0")
-mgr = ManagedAgents()
+mgr = _Harness()
 
 
 # --- Static UI ---------------------------------------------------------------

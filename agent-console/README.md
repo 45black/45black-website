@@ -8,16 +8,23 @@ handle email triage, calendar management and ad-hoc business tasks for 45black.
 
 ## What this is
 
-- **Backend:** small FastAPI app that talks to the Anthropic **Managed Agents**
-  API (`/v1/agents`, `/v1/sessions`). Persistence, crash-recovery and event
-  streaming are handled server-side by Anthropic — we don't run our own
-  checkpointer.
+- **Backend:** small FastAPI app with a pluggable harness. The frontend is
+  harness-agnostic; pick one with `AGENT_HARNESS=claude|gemini` in `.env`.
+  - `claude` → Anthropic **Managed Agents** (cloud-managed state,
+    zero-ops persistence, pay-per-token).
+  - `gemini` → local **SQLite + Gemini 3 Pro** on a droplet / Mac mini
+    (uses your existing Google subscription via `gcloud` ADC / Gemini CLI
+    free-tier quota where possible).
 - **Frontend:** static HTML/CSS/JS in the 45black visual style (IBM Plex,
   Saville palette). Lists agents, shows session history, streams live events.
 - **Agents:** JSON definitions for Email Triage and Calendar Assistant, each
   wired to community MCP servers for Gmail / Google Calendar.
 - **Scheduler:** `scripts/tick.py` — a single-shot entrypoint meant to be run
   from cron or `launchd` every N minutes to start a new triage session.
+
+The **recommended starting point is `gemini`** — see `COSTS.md` for the
+honest comparison. Flip to `claude` later if you outgrow Gemini quota or
+need Claude-specific draft-writing quality.
 
 ## Why not LangGraph / OpenHands / a DO droplet?
 

@@ -41,3 +41,6 @@ coverage/
 # Agent console local state
 agent-console/.agent-ids.json
 agent-console/.cloudflared/
+agent-console/harness.sqlite
+agent-console/harness.sqlite-wal
+agent-console/harness.sqlite-shm

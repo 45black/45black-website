@@ -1,186 +1,201 @@
-# Cost comparison: Claude Managed Agents vs. Gemini 3 Pro on a DO droplet
+# Cost comparison — honest revision
 
-> All numbers are **indicative** — API prices drift, your usage shape will
-> differ. Treat this as a sanity-check, not a quote. Last revised April 2026.
+> Previous revision of this doc overstated Managed Agents' case by ~4× and
+> understated the droplet baseline. This version fixes both. Numbers are
+> still indicative — check live pricing before signing off. Last revised
+> April 2026.
 
-## 1. Workload assumption
+## 1. The call Jon made on the first draft
 
-Typical "always-on assistant" day for 45black:
+On the first pass of this doc I wrote:
 
-| Task | Cadence | Rough tokens / run (in + out) |
-|------|---------|-------------------------------|
-| Email triage tick | every 10 min, 07–19 weekdays → ~72/day | 12k in + 2k out |
-| Morning briefing | 1× weekday at 07:30 | 8k in + 3k out |
-| Ad-hoc conversation (you talking to the console) | ~30 events/day | 6k in + 1.5k out average |
-| Calendar find-time, drafts, etc. | 10/day | 5k in + 1k out |
+- **Claude Managed Agents: £70–£105/month**
+- **Droplet + Gemini path: £75–£90/month cash, £575–£1 090 fully loaded**
 
-**Daily totals (rough):**
+Two problems with that framing, both flagged in review:
 
-- Input: ~72 × 12k + 8k + 30 × 6k + 10 × 5k ≈ **1.1 M tokens/day**
-- Output: ~72 × 2k + 3k + 30 × 1.5k + 10 × 1k ≈ **0.20 M tokens/day**
+1. **Padded token model.** I assumed every triage tick processes a
+   non-trivial queue (12k in / 2k out). In reality ~85% of ticks hit an
+   empty inbox and do a cheap list-and-stop loop. Real monthly tokens are
+   roughly 35–40% of what I claimed.
 
-Per month (≈ 21 working days):
+2. **Pretended sunk costs were new.** The £18/month DO droplet and £20/month
+   Google AI subscription already exist and are paid for other reasons.
+   For this decision the marginal cost of adding an agent loop to that
+   infra is what matters, not the gross line item.
 
-- Input ≈ **23 M tokens/month**
-- Output ≈ **4.2 M tokens/month**
+Both adjustments point the same direction: the droplet path is cheaper and
+the gap is wider than I made out.
 
-Prompt caching on the system prompt + agent definition typically cuts the
-input bill by 60–80% once the session is warm — I'll show both the naive
-number and a cached number below.
+## 2. Honest workload assumption
 
-## 2. Option A — Claude Managed Agents (recommended path)
+72 triage ticks/day (every 10 min, 07–19, weekdays), 1 morning briefing,
+~30 conversational turns/day, ~10 calendar operations.
 
-Pricing shown is list per 1M tokens, current published rates (early 2026,
-may drift — check the platform page before signing off):
+Triage tick shape:
 
-| Model | Input $/M | Output $/M | Cached input $/M |
-|-------|-----------|------------|------------------|
-| Haiku 4.5 | ~$1 | ~$5 | ~$0.10 |
-| Sonnet 4.6 | ~$3 | ~$15 | ~$0.30 |
-| Opus 4.6 | ~$15 | ~$75 | ~$1.50 |
+| Tick type | Share | Input | Output |
+|-----------|-------|-------|--------|
+| Empty inbox | ~85% | ~1.5k | ~0.2k |
+| Light (1–3 msgs) | ~12% | ~5k | ~1k |
+| Heavy backlog | ~3% | ~15k | ~3k |
 
-**Sonnet 4.6 (recommended default), naive:**
+Per working day (21/month):
 
-- Input: 23 × $3 = **$69**
-- Output: 4.2 × $15 = **$63**
-- **~$132 / month**
+- Triage: ~190k in / 40k out
+- Morning briefing: 8k in / 3k out
+- Ad-hoc conversation: 30 × 6k in / 1.5k out ≈ 180k in / 45k out
+- Calendar ops: 10 × 5k in / 1k out ≈ 50k in / 10k out
 
-**Sonnet 4.6 with prompt caching active on ~70% of input:**
+**Monthly totals:**
 
-- Uncached input: 7 × $3 = $21
-- Cached input: 16 × $0.30 = $4.80
-- Output: 4.2 × $15 = $63
-- **~$89 / month**
+- Input: **~9 M tokens**
+- Output: **~2 M tokens**
 
-**Haiku 4.5 (for the triage tick; reserve Sonnet for human conversations):**
+(Previous revision claimed 23 M / 4.2 M. This is the honest number.)
 
-- If 80% of traffic (triage) uses Haiku and 20% (conversation) uses Sonnet,
-  expected bill ≈ **$35–50 / month**.
+## 3. Option A — Claude Managed Agents, honest
 
-**Managed Agents infrastructure surcharge:** currently **$0** on top of
-token costs in the beta. No egress, no "compute minutes" line item. Storage
-of session state / event history is included. This is the key number that
-makes Managed Agents attractive vs. hosting your own runner.
+### Base: Sonnet 4.6 for everything
 
-**Cloudflare tunnel** (to let the cloud agent reach your local MCPs): **$0**
-on the free tier, assuming you already own the 45black.tech zone.
+- Input: 9 × $3 = $27
+- Output: 2 × $15 = $30
+- **~$57 / month ≈ £45 / month**
 
-**Total expected run-rate:** **£40–£110 / month** depending on model mix and
-cache hit rate. Plus your existing Mac mini electricity (~£3/month at UK
-rates if it was already on for other reasons — not a new cost).
+### With prompt caching (~70% of input cacheable)
 
-## 3. Option B — Gemini 3 Pro on a DigitalOcean droplet ("openclaw-style")
+- Uncached input: 2.7 × $3 = $8
+- Cached input: 6.3 × $0.30 = $1.90
+- Output: $30
+- **~$40 / month ≈ £32 / month**
 
-You mentioned Gemini 3 Pro is included in your current Google subscription
-(Google One AI Premium / Workspace AI tier). That's a material advantage
-and it changes the shape of the comparison.
+### Smart routing — Haiku 4.5 for triage, Sonnet for conversation
 
-### What's actually bundled
+Triage is ~60% of input by volume, mostly boring, ideal for Haiku 4.5.
 
-The subscription gives you **Gemini 3 Pro through the Gemini app, NotebookLM,
-and Workspace surfaces**. It does **not** give you free unmetered access to
-the Gemini API (`generativelanguage.googleapis.com` /
-`aiplatform.googleapis.com`). Any agent harness — OpenHands, LangGraph, a
-custom runner, the OpenRouter-style "openclaw" image — calls the API, and
-that's billed per-token separately from the subscription.
+- Triage input (Haiku, mostly cached): ~$2
+- Triage output (Haiku): 1.2 M × $5/M = $6
+- Conversation input (Sonnet, cached): ~$3
+- Conversation output (Sonnet): 0.8 M × $15 = $12
+- **~$23 / month ≈ £18 / month**
 
-So the honest picture has two sub-cases.
+So the realistic Managed Agents bill sits in **£18–£45/month** depending on
+how hard you tune model routing and caching.
 
-### B1 — Use Gemini via the subscription surface (effectively £0 inference)
+### What's *not* included on top
 
-Only works if you interact with Gemini **through** Gemini.app, Workspace
-add-ons, or NotebookLM. That means you don't get:
+- **Hosting:** £0 (Anthropic runs the harness)
+- **Persistence / event log / recovery:** £0 (managed, in-beta freebie)
+- **Cloudflare tunnel for local MCPs:** £0 (free tier)
+- **Mac mini electricity:** marginal, already running
 
-- a persistent agent loop you control
-- tool calls into your own MCP servers
-- scheduled / autonomous runs
-- an event log you can wire into a UI
+**Managed Agents marginal monthly: £18–£45.**
 
-So for "professional UI for seeing and running agents that triage email on a
-schedule", B1 **does not apply** — the subscription bundle isn't the right
-shape for this use case, even though it's paid for. It's useful for ad-hoc
-research, document summarisation, in-Gmail drafting via the Workspace
-sidebar, etc. Keep it; don't count on it for the agent loop.
+## 4. Option B — Existing droplet + Gemini 3 Pro (Jon's actual infra)
 
-### B2 — Gemini 3 Pro API from a DO droplet with an open-source harness
+### The subscription question, properly answered
 
-Droplet cost (always-on, 2 vCPU / 4 GB enough for OpenHands / custom
-runner): **~$24/month** (≈ £19). Add a reserved IP and backups: **~$30/month**.
+Google AI Ultra / One AI Premium / Workspace AI **do not** include unlimited
+Gemini API calls. What they do give, relevant here:
 
-Gemini 3 Pro API list pricing (indicative, drifts):
+1. **Gemini app + NotebookLM + Workspace sidebar access** — not usable for
+   programmatic agent loops.
+2. **Gemini CLI** with login auth — as of early 2026 this rides the free
+   "AI Studio" tier tied to your Google account. Published quota is on the
+   order of **1000 Gemini-Pro-class requests/day** with rate limits per
+   minute. A 30-min triage cadence + briefings + conversation fits
+   comfortably inside this for a single operator. Heavy backlog days on
+   10-min cadence can clip the RPM cap.
+3. **Vertex AI / AI Studio paid API** — separate billing, not bundled.
 
-- ~$1.25 / M input, ~$10 / M output (standard tier). Context caching knocks
-  ~75% off cached input.
+So if your agent harness authenticates via Gemini CLI / ADC against your
+Google account, realistic marginal inference cost is **£0** up to quota,
+occasional small overage if you go hard.
 
-Same 23 M in / 4.2 M out workload:
+### Droplet
 
-- Input: 23 × $1.25 = **$29**
-- Output: 4.2 × $10 = **$42**
-- With caching on ~70% of input: **~$50**
-- **~$71–80 / month API**, plus **$24–30 droplet** = **~$95–110 / month**
+You already pay **£18/month** for other reasons. Adding an OpenHands or
+custom harness process alongside whatever is already running there is
+marginal RAM and CPU.
 
-Then add your own time:
+**Droplet path marginal monthly: £0–£5** (electricity on edge-cases plus
+the occasional overage request into the paid Gemini API).
 
-- Harness install + keep-alive (OpenHands, Autogen, custom)
-- Persistence layer (Postgres or SQLite + WAL)
-- Crash recovery, log rotation, upgrade path
-- Security: SSH hardening, fail2ban, unattended upgrades, TLS cert renewal
+## 5. Side-by-side, honest
 
-Call it **5–10 hours/month of maintenance** once settled; more during the
-first month. Value that at whatever your time costs.
+| Line | Managed Agents | Droplet + Gemini |
+|------|---------------|------------------|
+| Inference | £18–£45 | £0 (inside free-tier quota), rising if you bust it |
+| Hosting | £0 | £0 marginal (already paying £18 for other reasons) |
+| Persistence / recovery / UI backend | Managed | You build it once |
+| Cloudflare tunnel to MCPs | Free tier | Same |
+| **Marginal monthly cash** | **£18–£45** | **£0–£5** |
+| Setup time | ~1 day | ~2–4 days |
+| Steady-state ops | ~0 | ~1–2 h/month |
 
-## 4. Side-by-side
+Cash-wise: **droplet path is clearly cheaper** given your existing baseline.
 
-| Line item                       | Claude Managed Agents         | Gemini 3 Pro on DO droplet |
-|---------------------------------|-------------------------------|----------------------------|
-| Inference                       | £70–£105 / mo                 | £55–£65 / mo               |
-| Compute / hosting               | £0                            | £19–£24 / mo               |
-| Persistence infra               | £0 (managed)                  | Included (you run it)      |
-| Event log / session browser     | £0 (managed)                  | You build it               |
-| Crash recovery                  | Managed                       | You build it               |
-| MCP access to local tools       | Cloudflare tunnel, £0         | Direct localhost, £0       |
-| Ops time                        | ~0 h / mo                     | ~5–10 h / mo               |
-| **Cash, steady state**          | **£70–£105 / mo**             | **£75–£90 / mo**           |
-| **Cash + ops at £100/h**        | **£70–£105 / mo**             | **£575–£1 090 / mo**       |
+## 6. What Managed Agents actually buys you
 
-Cash-only, they're within spitting distance. Once you price in the fact
-that one of you has to wear the DevOps hat for the droplet path — and that
-you're a consultant whose hour has a billable opportunity cost — Managed
-Agents wins comfortably for this use case.
+Strip out the inflated numbers and this is the honest case:
 
-## 5. When the droplet still wins
+1. **Zero persistence code to own.** Sessions, event logs, crash-resume,
+   conversation history, token budgeting — all handled upstream. On the
+   droplet path you write this, maintain it, and debug it when it fails
+   during a client call.
+2. **Claude > Gemini for tool-heavy agent work.** The quality gap on
+   nuanced classification and client-facing draft writing is real. Not
+   night-and-day, but meaningful for a consultancy where written
+   communication is the product.
+3. **No daily rate-limit ceiling.** Gemini CLI free tier has quotas; on a
+   bad morning you can clip them and lose the agent for hours. Managed
+   Agents doesn't throttle at that scale.
+4. **Managed = one fewer thing in your ops stack.** The droplet already
+   exists, but adding an always-on stateful agent loop to it adds
+   maintenance weight — it's not just a static site anymore.
 
-- You want a hard data-sovereignty story (no prompts leaving your UK-
-  controlled infra). Neither cloud option satisfies that; a Mac-mini-only
-  setup with a locally-hosted OSS model does, at a big capability cost.
-- You already run infra for other reasons and the marginal cost of "one
-  more service" on an existing droplet is tiny.
-- You want to experiment with multiple models rapidly (Gemini, GPT, local
-  Llama) and the harness becomes your model-selection layer.
+## 7. Revised recommendation
 
-## 6. Cost levers if you go with Managed Agents
+**Start on the droplet path, not Managed Agents.**
 
-1. **Route triage through Haiku 4.5.** Sonnet only kicks in when a human
-   is in the loop. Saves 50–70% of the triage bill.
-2. **Aggressive prompt caching.** Cache the system prompt + tool list +
-   recent inbox state as a single block. Cached reads are ~10× cheaper.
-3. **Throttle the triage cadence.** 15 min beats 10 min for email, and
-   cuts 33% of ticks.
-4. **Escalation ladder.** Haiku drafts a classification, only escalates
-   the edge cases to Sonnet / Opus.
-5. **Off-hours pause.** No ticks between 19:00 and 07:00 already — keep
-   weekends off entirely unless you're expecting urgent mail.
+You're already paying for the droplet and the subs. Build/install a
+harness (OpenHands, Letta, or a slim custom FastAPI + Gemini CLI loop)
+alongside whatever the droplet already runs. Point it at Gemini via CLI
+auth, use the Cloudflare tunnel to reach the Mac mini's MCPs. Marginal
+cost ~£0/month.
 
-Applied together, the sonnet bill above drops into the **£30–£60/month**
-range without noticeably changing agent quality.
+The console frontend + MCP config + agent definitions + launchd wiring
+from this scaffold all port across unchanged — only the backend LLM
+adapter changes. A `backend/gemini_harness.py` sketch is in this repo.
 
-## 7. Recommendation
+**Move to Managed Agents later if:**
 
-Start on **Claude Managed Agents**, Sonnet 4.6 for human-in-the-loop work,
-Haiku 4.5 for autonomous ticks, with prompt caching on. Keep Gemini 3 Pro
-for ad-hoc research via the Gemini app and Workspace sidebars — that's
-where its bundle value actually lands.
+- Gemini quota trips more than a couple of times a month (rate limits
+  during actual work hurt more than a small cash cost).
+- You find yourself spending weekends on harness maintenance rather than
+  on 45black work — at that point Managed Agents' £18–£45/month is worth
+  it to offload state and recovery.
+- You want Claude's specific draft-writing quality on the client-facing
+  outbound mail, in which case consider a **hybrid**: Gemini on the droplet
+  for triage/classification, Managed Agents (or raw Anthropic API) called
+  selectively from the droplet when a human-quality draft is needed.
 
-Revisit the DO droplet only if either (a) the API bill exceeds £150/month
-for two consecutive months, or (b) Anthropic starts charging a per-session
-Managed Agents surcharge that changes the economics.
+## 8. Cost levers either way
+
+1. **Cadence is the biggest one.** 30-min triage vs. 10-min = 3× less
+   inference, indistinguishable in user experience for a solo operator.
+2. **Model tiering.** Triage is Haiku-class work. Reserve Sonnet / Opus
+   or Gemini-3-Pro for human-in-the-loop drafts.
+3. **Caching.** System prompt + agent definition + recent inbox snapshot
+   as a single cacheable block. 10× cheaper on cached reads.
+4. **Off-hours and weekends off.** Not rocket science; just make sure the
+   cron actually has the time-window filter (see `scripts/tick.py`).
+
+Applied together these cut either bill by roughly 60%.
+
+## 9. Leaving the first draft on the record
+
+The first version of this doc is at commit 62f675a. Keeping the history
+honest — an inflated "recommended" answer that happened to align with the
+vendor I was scaffolding for is exactly the kind of thing you should
+adversarially check, and you did.
