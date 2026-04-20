@@ -123,8 +123,15 @@ async def stream(session_id: str) -> StreamingResponse:
 
 @app.get("/api/health")
 def health() -> dict[str, Any]:
+    harness = os.environ.get("AGENT_HARNESS", "claude")
+    if harness == "gemini":
+        key_set = bool(os.environ.get("GEMINI_API_KEY"))
+    else:
+        key_set = bool(settings.anthropic_api_key)
     return {
         "ok": True,
-        "api_key_set": bool(settings.anthropic_api_key),
+        "harness": harness,
+        "api_key_set": key_set,
+        "bash_enabled": os.environ.get("ALLOW_BASH_TOOL", "0") == "1",
         "agents_dir": str(settings.agents_dir),
     }
